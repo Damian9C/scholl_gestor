@@ -21,6 +21,7 @@
   import General from "../layouts/general";
   import Card_item from "../components/Home/card_item";
   import Search_bar from "../components/search_bar";
+  import { db } from "../util";
 
   export default {
     name: 'Home',
@@ -77,6 +78,14 @@
           }
         ]
       }
+    },
+    async mounted() {
+
+      let algo = await db.collection('school_groups').get();
+
+      algo.forEach(e => {
+        console.log(e.data())
+      });
     }
   }
 </script>
