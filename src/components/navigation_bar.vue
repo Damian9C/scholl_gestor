@@ -43,7 +43,9 @@
       <v-avatar
           color="primary"
           size="36"
-      ></v-avatar>
+      >
+        <span class="white--text text-h7">JC</span>
+      </v-avatar>
     </div>
 
   </v-app-bar>

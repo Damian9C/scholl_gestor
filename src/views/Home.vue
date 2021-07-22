@@ -33,58 +33,14 @@
 
     data(){
       return{
-        lessons: [
-          {
-            id: '1a',
-            matter: 'Matematicas',
-            group: '1.-A',
-            color: '#3498DB',
-          },
-          {
-            id: '2b',
-            matter: 'Historia',
-            group: '2.-B',
-            color: '#FF6C1A'
-          },
-          {
-            id: '3c',
-            matter: 'Geografia',
-            group: '3.-C',
-            color: '#9A39C8'
-          },
-          {
-            id: '2b',
-            matter: 'Literarura',
-            group: '2.-B',
-            color: '#20CA5A'
-          },
-          {
-            id: '3a',
-            matter: 'Filosofia',
-            group: '3.-A',
-            color: '#D52645'
-          },
-          {
-            id: '3b',
-            matter: 'Algebra',
-            group: '3.-B',
-            color: '#eb9e34'
-          },
-          {
-            id: '3c',
-            matter: "Tic's",
-            group: '3.-C',
-            color: '#1d968a'
-          }
-        ]
+        lessons: []
       }
     },
     async mounted() {
+      let algo = await db.collection('staff').where( 'email', '==', 'carlos_dami12@live.com' ).get();
 
-      let algo = await db.collection('school_groups').get();
-
-      algo.forEach(e => {
-        console.log(e.data())
+      algo.forEach(request => {
+        this.lessons = request.data().lessons
       });
     }
   }

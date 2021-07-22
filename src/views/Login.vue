@@ -7,6 +7,7 @@
         <br/>
 
         <v-text-field
+            v-model="user"
             label="Usuario"
             outlined
             :rules="[rules.required]"
@@ -31,7 +32,7 @@
             color="primary"
             elevation="2"
             x-large
-            @click="$router.push('/Home')"
+            @click="logIn"
         >Acceder</v-btn>
 
       </div>
@@ -44,18 +45,54 @@
 </template>
 
 <script>
+import firebase from "firebase";
+import {db} from "../util";
+import {mapActions} from "vuex";
+
 export default {
   name: "Login",
   data () {
     return {
       show1: false,
-      password: '',
       layout: 'ini',
       rules: {
         required: value => !!value || 'Obligatorio'
       },
+
+      password: '',
+      user: '',
     }
   },
+
+  methods:{
+
+    logIn () {
+      if (this.user && this.password){
+        firebase.auth().signInWithEmailAndPassword(this.user,this.password).then((userCredential) => {
+          this.getUserActive()
+          this.$router.push({name: 'Home'});
+        }).catch(( error ) => alert(error.message))
+      }else{
+        this.error='Todos los campos son requeridos';
+      }
+    },
+
+    ...mapActions(['setUserData']),
+
+    getUserActive (){
+      db.collection('staff')
+          .get()
+          .then((r) => r.docs.map((item) => {
+            console.log(item.data().email)
+            console.log(this.user)
+            if (this.user === item.data().email ){
+              this.setUserData(item.data())
+            }
+          }))
+    },
+
+  },
+
 }
 </script>
 
