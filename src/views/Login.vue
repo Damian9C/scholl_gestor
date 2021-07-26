@@ -71,7 +71,7 @@ export default {
         auth.signInWithEmailAndPassword(this.user,this.password)
             .then((userCredential) => {
               this.getUserActive();
-              this.$router.push({name: 'Home'});
+              this.$router.push({name: 'home'});
         }).catch(( error ) => alert(error.message))
       }else{
         this.error='Todos los campos son requeridos';

@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 import Login from "../views/Login";
 import lesson from "../views/Lesson";
 import student from "../views/Student";
-import firebase from "firebase";
+import {auth} from "../util";
 
 Vue.use(VueRouter)
 
@@ -15,10 +15,6 @@ const routes = [
   },
   {
     path: '/',
-    redirect: '/login',
-  },
-  {
-    path: '/login',
     name: 'Login',
     component: Login
   },
@@ -53,7 +49,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let user = firebase.auth().currentUser;
+  let user = auth.currentUser;
   let premises = to.matched.some(record => record.meta.requestAuth)
 
   if (!user && premises){

@@ -33,11 +33,27 @@
           </v-btn>
         </template>
 
-        <v-list>
-          <v-list-item @click="">
-            <v-list-item-title>Salir</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <v-card
+            class="mx-auto"
+            max-width="500"
+        >
+          <v-list>
+            <v-list-item-group>
+              <v-list-item @click.prevent="logOut">
+                <v-list-item-icon>
+                  <v-icon>
+                    mdi-logout
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    Salir
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-menu>
 
       <v-avatar
@@ -52,8 +68,20 @@
 </template>
 
 <script>
+import {auth} from "../util";
+
 export default {
-  name: "navigation_bar"
+  name: "navigation_bar",
+
+  data: () => ({}),
+
+  methods:{
+    logOut (){
+      auth.signOut().then(() => {
+        this.$router.push('/')
+      })
+    },
+  },
 }
 </script>
 
