@@ -11,6 +11,8 @@
           <card_item :lesson="lesson"/>
         </div>
 
+        {{ this.$store.state.user }}
+
       </div>
     </div>
 
@@ -19,7 +21,7 @@
 
 <script>
   import General from "../layouts/general";
-  import Card_item from "../components/Home/card_item";
+  import Card_item from "../components/home/card_item";
   import Search_bar from "../components/search_bar";
   import { db } from "../util";
 

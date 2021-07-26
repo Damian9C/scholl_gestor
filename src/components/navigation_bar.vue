@@ -60,7 +60,7 @@
           color="primary"
           size="36"
       >
-        <span class="white--text text-h7">JC</span>
+        <span class="white--text text-h7">{{ text }}</span>
       </v-avatar>
     </div>
 
@@ -73,7 +73,9 @@ import {auth} from "../util";
 export default {
   name: "navigation_bar",
 
-  data: () => ({}),
+  data: () => ({
+    text: '',
+  }),
 
   methods:{
     logOut (){
@@ -81,6 +83,16 @@ export default {
         this.$router.push('/')
       })
     },
+
+    setNick (){
+      let data = this.$store.state.user.name.toUpperCase();
+      let subData = data.split(' ')
+
+      this.text = `${subData[0].substr(0,1)}${subData[1].substr(0, 1)}`
+    },
+  },
+  mounted() {
+    this.setNick()
   },
 }
 </script>
