@@ -57,7 +57,7 @@
       </v-menu>
 
       <v-avatar
-          color="primary"
+          :color="color"
           size="36"
       >
         <span class="white--text text-h7">{{ text }}</span>
@@ -75,6 +75,12 @@ export default {
 
   data: () => ({
     text: '',
+    colors:{
+      admin: '#FF097F',
+      executive: '#20CA5A',
+      teacher: '#1B9FFF',
+    },
+    color: '',
   }),
 
   methods:{
@@ -85,13 +91,17 @@ export default {
     },
 
     setNick (){
-      let data = this.$store.state.user.name.toUpperCase();
-      let subData = data.split(' ')
+      console.log(this.$store.state.user.name)
+      let subData = this.$store.state.user.name.split(" ");
 
-      this.text = `${subData[0].substr(0,1)}${subData[1].substr(0, 1)}`
+
+      this.text = `${subData[0].substr(0,1)}${subData[1].substr(0, 1)}`;
+
+      let color = this.$store.state.user.position
+      this.color = this.colors[color]
     },
   },
-  mounted() {
+  beforeMount() {
     this.setNick()
   },
 }

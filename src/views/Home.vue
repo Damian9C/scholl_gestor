@@ -41,7 +41,8 @@
       }
     },
 
-    mounted() {
+    async mounted() {
+      console.log(await this.$store.state.user)
       this.getLessons();
     }
   }

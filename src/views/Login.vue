@@ -70,8 +70,9 @@ export default {
       if (this.user && this.password){
         auth.signInWithEmailAndPassword(this.user,this.password)
             .then((userCredential) => {
-              this.getUserActive();
-              this.$router.push({name: 'home'});
+              this.getUserActive().finally( () => {
+                this.$router.push({name: 'home'})
+              });
         }).catch(( error ) => alert(error.message))
       }else{
         this.error='Todos los campos son requeridos';
