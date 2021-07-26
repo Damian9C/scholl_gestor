@@ -37,9 +37,9 @@
       }
     },
     async mounted() {
-      let algo = await db.collection('staff').where( 'email', '==', 'carlos_dami12@live.com' ).get();
+      let data = await db.collection('staff').where( 'email', '==', 'carlos_dami12@live.com' ).get();
 
-      algo.forEach(request => {
+      data.forEach(request => {
         this.lessons = request.data().lessons
       });
     }

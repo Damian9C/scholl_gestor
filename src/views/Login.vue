@@ -46,7 +46,7 @@
 
 <script>
 import firebase from "firebase";
-import {db} from "../util";
+import { auth, db } from "../util";
 import {mapActions} from "vuex";
 
 export default {
@@ -68,9 +68,10 @@ export default {
 
     logIn () {
       if (this.user && this.password){
-        firebase.auth().signInWithEmailAndPassword(this.user,this.password).then((userCredential) => {
-          this.getUserActive()
-          this.$router.push({name: 'Home'});
+        auth.signInWithEmailAndPassword(this.user,this.password)
+            .then((userCredential) => {
+              this.getUserActive();
+              this.$router.push({name: 'Home'});
         }).catch(( error ) => alert(error.message))
       }else{
         this.error='Todos los campos son requeridos';
@@ -79,18 +80,15 @@ export default {
 
     ...mapActions(['setUserData']),
 
-    getUserActive (){
-      db.collection('staff')
-          .get()
-          .then((r) => r.docs.map((item) => {
-            console.log(item.data().email)
-            console.log(this.user)
-            if (this.user === item.data().email ){
-              this.setUserData(item.data())
-            }
-          }))
-    },
+    async getUserActive (){
+      let data = await db.collection('staff').get();
 
+      data.forEach(item => {
+        if (this.user === item.data().email ){
+          this.setUserData(item.data())
+        }
+      });
+    },
   },
 
 }
