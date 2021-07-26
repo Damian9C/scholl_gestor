@@ -11,11 +11,8 @@
           <card_item :lesson="lesson"/>
         </div>
 
-        {{ this.$store.state.user }}
-
       </div>
     </div>
-
   </div>
 </template>
 
@@ -23,7 +20,6 @@
   import General from "../layouts/general";
   import Card_item from "../components/home/card_item";
   import Search_bar from "../components/search_bar";
-  import { db } from "../util";
 
   export default {
     name: 'Home',
@@ -38,12 +34,15 @@
         lessons: []
       }
     },
-    async mounted() {
-      let data = await db.collection('staff').where( 'email', '==', 'carlos_dami12@live.com' ).get();
 
-      data.forEach(request => {
-        this.lessons = request.data().lessons
-      });
+    methods:{
+      getLessons (){
+        this.lessons = this.$store.state.user.lessons
+      }
+    },
+
+    mounted() {
+      this.getLessons();
     }
   }
 </script>
