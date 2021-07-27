@@ -29,11 +29,9 @@
       General,
     },
 
-    data(){
-      return{
-        lessons: []
-      }
-    },
+    data: () => ({
+      lessons: []
+    }),
 
     methods:{
       getLessons (){

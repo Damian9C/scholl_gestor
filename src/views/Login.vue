@@ -51,18 +51,16 @@ import {mapActions} from "vuex";
 
 export default {
   name: "Login",
-  data () {
-    return {
-      show1: false,
-      layout: 'ini',
-      rules: {
-        required: value => !!value || 'Obligatorio'
-      },
+  data:() => ({
+    show1: false,
+    layout: 'ini',
+    rules: {
+      required: value => !!value || 'Obligatorio'
+    },
 
-      password: '',
-      user: '',
-    }
-  },
+    password: '',
+    user: '',
+  }),
 
   methods:{
 

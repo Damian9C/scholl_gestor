@@ -40,12 +40,12 @@ export default {
 .search__bar{
   display: flex;
   justify-content: space-between;
-  height: 3.5rem;
+  align-items: center;
 }
 
 .search__barBtn{
   margin-left: 1rem;
-  height: 100%;
+  margin-bottom: 1.65rem;
 }
 
 </style>

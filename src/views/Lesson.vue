@@ -2,21 +2,7 @@
   <div>
     <general/>
     <div class="container__body">
-
-      <div class="container__body--btn">
-        <v-btn
-            text
-            to="/home"
-        >
-          <v-icon left>
-            mdi-arrow-left
-          </v-icon>
-          <v-spacer/>
-          Regresar
-        </v-btn>
-      </div>
-
-      <v-divider/><br/>
+      <return_bar url="/home"/>
 
       <div class="container__body--first">
 
@@ -60,11 +46,18 @@
 <script>
 import Table_component from "../components/lesson/table_component";
 import General from "../layouts/general";
+import Return_bar from "../components/return_bar";
 export default {
   name: "lesson",
-  components: {General, Table_component},
+  components: {Return_bar, General, Table_component},
+
+  data:() => ({
+
+  }),
   mounted() {
     console.log(this.$route.params.id)
+
+
   }
 }
 </script>
@@ -80,10 +73,6 @@ export default {
 .container__body{
   width: 80%;
   margin: 1rem 0 0 10%;
-}
-
-.container__body--btn{
-  margin-bottom: .5rem;
 }
 
 .container__body--tittle{

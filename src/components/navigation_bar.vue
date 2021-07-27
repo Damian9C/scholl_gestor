@@ -4,7 +4,7 @@
       dense
       dark
   >
-    <v-toolbar-title @click="$router.push('/')" class="Roboto-Black">
+    <v-toolbar-title @click="$router.push('/home')" class="Roboto-Black">
       <v-btn
           class="my-1"
           text
