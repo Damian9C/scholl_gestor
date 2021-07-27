@@ -3,13 +3,24 @@
     <div class="container__body--btn">
       <v-btn
           outlined
-          color="#525252"
+          color="#393939"
           :to="url"
       >
         <v-icon left>
           mdi-arrow-left
         </v-icon>
         Regresar
+      </v-btn>
+      <v-spacer/>
+      <v-btn
+          class="search__barBtn"
+          outlined
+          color="#393939"
+      >
+        Buscar
+        <v-icon right>
+          mdi-magnify
+        </v-icon>
       </v-btn>
     </div>
 
@@ -27,6 +38,7 @@ export default {
 <style scoped>
 
 .container__body--btn{
+  display: flex;
   margin-bottom: .5rem;
 }
 
