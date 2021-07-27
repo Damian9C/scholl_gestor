@@ -2,13 +2,13 @@
   <div>
     <div class="container__body--btn">
       <v-btn
-          text
+          outlined
+          color="#525252"
           :to="url"
       >
         <v-icon left>
           mdi-arrow-left
         </v-icon>
-        <v-spacer/>
         Regresar
       </v-btn>
     </div>
