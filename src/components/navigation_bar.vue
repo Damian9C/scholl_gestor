@@ -91,7 +91,6 @@ export default {
     },
 
     setNick (){
-      console.log(this.$store.state.user.name)
       let subData = this.$store.state.user.name.split(" ");
 
 

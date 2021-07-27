@@ -5,8 +5,7 @@
 
       <div class="container__body--btn">
         <v-btn
-            color="#F7F9FA"
-            depressed
+            text
             to="/home"
         >
           <v-icon left>
