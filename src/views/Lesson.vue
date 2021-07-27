@@ -52,12 +52,22 @@ export default {
   components: {Return_bar, General, Table_component},
 
   data:() => ({
-
+    lesson: [],
+    class: '',
+    group: '',
   }),
+
+  methods: {
+
+    async getDataClass() {
+
+    }
+
+  },
+
   mounted() {
-    console.log(this.$route.params.id)
-
-
+    console.log(this.$route.query.matter)
+    this.getDataClass();
   }
 }
 </script>

@@ -4,7 +4,7 @@
         id="card__item"
         class="card__item"
         :style="cardBackgroundColor"
-        @click="$router.push('/lesson/' + lesson.id)"
+        @click="$router.push({path:`/lesson/${lesson.id}`,query:{ matter: lesson.matter }})"
     >
 
       <div>

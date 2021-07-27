@@ -21,7 +21,7 @@
       <tr
           v-for="item in students"
           :key="item.name"
-          @click="$router.push(`/student/${item.id}`)"
+          @click="$router.push(`/student/${item.il}`)"
           class="table__item"
       >
         <td>{{ item.name }}</td>
@@ -39,43 +39,43 @@ export default {
   name: "table_component",
   data(){
     return{
-      students: {
-        0:{
-          id: 'a1',
+      students: [
+        {
+          il: 'a1',
           name: 'Carlos Manuel Guisado',
           p1: 10
         },
-        1:{
-          id: 'a2',
+        {
+          il: 'a2',
           name: 'Juan-Carlos Soriano',
           p1: 9
         },
-        2:{
+        {
           id: 'a3',
           name: 'Maria Jose Giron',
           p1: 8
         },
-        3:{
+        {
           id: 'a4',
           name: 'Maria Angela Quero',
           p1: 7
         },
-        4:{
+        {
           id: 'a5',
           name: 'Pablo Jose Pedraza',
           p1: 6
         },
-        5:{
+        {
           id: 'a6',
           name: 'Maria-Ines Arribas',
           p1: 5
         },
-        6:{
+        {
           id: 'a7',
           name: 'Miguel Angel Lora',
           p1: 4
         }
-      }
+      ]
     }
   }
 }

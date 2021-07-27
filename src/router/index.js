@@ -37,6 +37,7 @@ const routes = [
   {
     path: '/student/:id',
     name: 'student',
+    props: true,
     component: student,
     meta:{
       requestAuth: true
