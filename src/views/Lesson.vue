@@ -8,10 +8,10 @@
 
         <div>
           <div class="container__body--tittle Roboto-Bold">
-            Matematicas
+            {{ this.$route.query.lesson }}
           </div>
           <div class="container__body--group Roboto-Medium">
-            1.-A
+            {{ allDataLesson.technicalName }}
           </div>
         </div>
 
@@ -38,7 +38,7 @@
       </div>
 
       <br/>
-      <table_component/>
+      <table_component :students="lesson"/>
     </div>
   </div>
 </template>
@@ -47,26 +47,43 @@
 import Table_component from "../components/lesson/table_component";
 import General from "../layouts/general";
 import Return_bar from "../components/return_bar";
+import {db} from "../util";
 export default {
   name: "lesson",
   components: {Return_bar, General, Table_component},
 
   data:() => ({
     lesson: [],
-    class: '',
-    group: '',
+    allDataLesson: {},
   }),
 
   methods: {
 
     async getDataClass() {
+      let matter = this.$route.query.lesson;
+      let data = await db.collection('groups').where('group','==', this.$route.params.id).get();
 
+      data.forEach(e => {
+        this.allDataLesson = e.data();
+      });
+
+      this.allDataLesson.students.forEach(e => {
+        e.lessons.forEach(element => {
+          if (element.lesson === matter){
+            this.lesson.push({
+              id: e.id,
+              name: e.name,
+              p1: element.partial1,
+              p2: element.partial2,
+              p3: element.partial3,
+            })
+          }
+        })
+      });
     }
-
   },
 
   mounted() {
-    console.log(this.$route.query.matter)
     this.getDataClass();
   }
 }
