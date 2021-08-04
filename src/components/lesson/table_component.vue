@@ -38,7 +38,6 @@
 export default {
   name: "table_component",
   props: ['students'],
-  data: () => {},
 }
 </script>
 
