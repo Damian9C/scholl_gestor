@@ -4,8 +4,6 @@
     <div class="studentCmp">
       <return_bar url="/home"/>
 
-      <search_bar/>
-
       <div>
         <information :student="student"/>
         <v-btn

@@ -20,18 +20,20 @@
               class="btn--unique"
               color="#28ad2c"
               dark
+              small
           >
+            <v-icon left> mdi-upload</v-icon>
             Cargar
-            <v-icon right> mdi-upload</v-icon>
           </v-btn>
           <br/>
           <v-btn
               class="btn--unique"
               color="#209fe3"
               dark
+              small
           >
+            <v-icon left> mdi-download </v-icon>
             Descargar
-            <v-icon right> mdi-download </v-icon>
           </v-btn>
 
         </div>
@@ -116,7 +118,20 @@ export default {
 }
 
 @media screen and (max-width: 900px) {
+  .container__body--first{
+    display: grid;
 
+    grid-template-columns: 100%;
+  }
+
+  .btn{
+    margin-top: 1rem;
+    display: flex;
+  }
+
+  .btn--unique{
+    margin-right: 1rem;
+  }
 }
 
 </style>
