@@ -9,18 +9,20 @@
     <h1 class="Roboto-Bold">Numero de Control:</h1>
     <p class="info__txt Roboto-Regular"> {{student .numControl}} </p>
 
-    <h1 class="Roboto-Bold">Padecimientos Medicos:</h1>
+    <div v-if="student.medicalCondition !== null">
+      <h1 class="Roboto-Bold">Padecimientos Medicos:</h1>
 
-    <div class="info__MC">
-      <v-chip
-          v-for="tag in student.medicalCondition"
-          :key="tag"
-          class="md-5"
-          outlined
-          color="blue"
-      >
-        <strong>{{ tag }}</strong>
-      </v-chip>
+      <div class="info__MC">
+        <v-chip
+            v-for="tag in student.medicalCondition"
+            :key="tag"
+            class="md-5"
+            outlined
+            color="blue"
+        >
+          <strong>{{ tag }}</strong>
+        </v-chip>
+      </div>
     </div>
 
   </div>

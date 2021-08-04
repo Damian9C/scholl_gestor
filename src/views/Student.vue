@@ -27,24 +27,37 @@ import Search_bar from "../components/search_bar";
 import Information from "../components/students/information";
 import General from "../layouts/general";
 import Return_bar from "../components/return_bar";
+import {getStudents} from "../util/utilities";
+
 export default {
   name: "student",
   components: {Return_bar, General, Information, Search_bar},
   data: () => ({
-    student:{
-      name: "Carlos Damian",
-      lastNameA: "Chavez",
-      lastNameB: "Gonzalez",
-      group: "1.-A",
-      numControl: "AAAAAAAAAA",
-      medicalCondition:[ 'Alergias', 'Asma', 'Diabetes', 'Alergias', 'Asma', 'Diabetes', 'Alergias' ]
-    },
+    student:{},
   }),
   methods:{
+    async getData(){
+      let request = await getStudents( this.$route.query.lesson );
+      let data;
 
+      request.forEach(e => {
+        data = e.data()
+      });
+
+      data.students.forEach(e => {
+        if ( e.id === this.$route.params.id ){
+          this.student = {
+            name: e.name,
+            group: "1.-A",
+            numControl: e.id,
+            medicalCondition: e.medicalCondition,
+          };
+        }
+      });
+    }
   },
   mounted() {
-
+    this.getData();
   }
 }
 </script>

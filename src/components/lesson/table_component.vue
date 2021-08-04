@@ -21,7 +21,10 @@
       <tr
           v-for="item in students"
           :key="item.name"
-          @click="$router.push(`/student/${item.id}`)"
+          @click="$router.push({
+            path:`/student/${item.id}`,
+            query:{ lesson: $route.params.id }
+          })"
           class="table__item"
       >
         <td>{{ item.name }}</td>

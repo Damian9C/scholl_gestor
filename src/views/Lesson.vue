@@ -49,7 +49,7 @@
 import Table_component from "../components/lesson/table_component";
 import General from "../layouts/general";
 import Return_bar from "../components/return_bar";
-import {db} from "../util";
+import { getStudents } from "../util/utilities";
 export default {
   name: "lesson",
   components: {Return_bar, General, Table_component},
@@ -63,7 +63,7 @@ export default {
 
     async getDataClass() {
       let matter = this.$route.query.lesson;
-      let data = await db.collection('groups').where('group','==', this.$route.params.id).get();
+      let data = await getStudents( this.$route.params.id );
 
       data.forEach(e => {
         this.allDataLesson = e.data();
@@ -117,7 +117,7 @@ export default {
   grid-template-columns: 100%;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 500px) {
   .container__body--first{
     display: grid;
 
