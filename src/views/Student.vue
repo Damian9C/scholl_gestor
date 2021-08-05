@@ -35,6 +35,7 @@ export default {
   data: () => ({
     student:{},
   }),
+
   methods:{
     async getData(){
       let request = await getStudents( this.$route.query.lesson );
@@ -52,6 +53,7 @@ export default {
             numControl: e.id,
             medicalCondition: e.medicalCondition,
           };
+          console.log(e)
         }
       });
     }

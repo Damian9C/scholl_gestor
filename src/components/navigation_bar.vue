@@ -69,6 +69,7 @@
 
 <script>
 import {auth} from "../util";
+import {mapActions} from "vuex";
 
 export default {
   name: "navigation_bar",
@@ -84,9 +85,12 @@ export default {
   }),
 
   methods:{
+    ...mapActions(['setUserData']),
+
     logOut (){
+      this.setUserData(null)
       auth.signOut().then(() => {
-        this.$router.push('/')
+        this.$router.push('/');
       })
     },
 
@@ -100,7 +104,7 @@ export default {
       this.color = this.colors[color]
     },
   },
-  beforeMount() {
+  mounted() {
     this.setNick()
   },
 }

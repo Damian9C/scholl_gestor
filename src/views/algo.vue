@@ -52,6 +52,7 @@ export default {
   name: "Login",
   data:() => ({
     show1: false,
+    layout: 'ini',
     rules: {
       required: value => !!value || 'Obligatorio'
     },
@@ -62,18 +63,16 @@ export default {
 
   methods:{
 
-    async logIn () {
-      try {
-        if (this.user && this.password){
-          await this.getUserActive();
-          auth.signInWithEmailAndPassword(this.user, this.password).then(r => {
-            this.$router.push('/home');
-          })
-        }else{
-          this.error='Todos los campos son requeridos';
-        }
-      }catch (e) {
-        alert(e)
+    logIn () {
+      if (this.user && this.password){
+        auth.signInWithEmailAndPassword(this.user,this.password)
+            .then((userCredential) => {
+              this.getUserActive().finally( () => {
+                this.$router.push({name: '/home'})
+              });
+            }).catch(( error ) => alert(error.message))
+      }else{
+        this.error='Todos los campos son requeridos';
       }
     },
 
@@ -89,6 +88,9 @@ export default {
       });
     },
   },
+  mounted() {
+    console.log('login')
+  }
 
 }
 </script>
