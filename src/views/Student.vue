@@ -28,6 +28,7 @@ import Information from "../components/students/information";
 import General from "../layouts/general";
 import Return_bar from "../components/return_bar";
 import {getStudents} from "../util/utilities";
+import {db} from "../util";
 
 export default {
   name: "student",
@@ -37,15 +38,12 @@ export default {
   }),
 
   methods:{
-    async getData(){
-      let request = await getStudents( this.$route.query.lesson );
+    getData(){
+
+
       let data;
 
-      request.forEach(e => {
-        data = e.data()
-      });
-
-      data.students.forEach(e => {
+      /*data.students.forEach(e => {
         if ( e.id === this.$route.params.id ){
           this.student = {
             name: e.name,
@@ -55,11 +53,15 @@ export default {
           };
           console.log(e)
         }
-      });
+      });*/
     }
   },
   mounted() {
-    this.getData();
+    db.collection('groups')
+        .where('group','==', this.$route.query.lesson)
+        .get().then(e => {
+      console.log(e)
+    });
   }
 }
 </script>

@@ -70,7 +70,7 @@ export default {
             this.$router.push('/home');
           })
         }else{
-          this.error='Todos los campos son requeridos';
+          this.error = 'Todos los campos son requeridos';
         }
       }catch (e) {
         alert(e)
