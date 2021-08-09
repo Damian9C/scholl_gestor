@@ -4,7 +4,7 @@
       <v-btn
           outlined
           color="#393939"
-          :to="url"
+          @click="$router.go(-1)"
       >
         <v-icon left>
           mdi-arrow-left

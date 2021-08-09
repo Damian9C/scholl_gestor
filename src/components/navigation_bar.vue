@@ -33,23 +33,20 @@
           </v-btn>
         </template>
 
-        <v-card
-            class="mx-auto"
-            max-width="500"
-        >
+        <v-card>
           <v-list>
             <v-list-item-group>
               <v-list-item @click.prevent="logOut">
-                <v-list-item-icon>
-                  <v-icon>
-                    mdi-logout
-                  </v-icon>
-                </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>
                     Salir
                   </v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-icon>
+                  <v-icon>
+                    mdi-logout
+                  </v-icon>
+                </v-list-item-icon>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -59,6 +56,7 @@
       <v-avatar
           :color="color"
           size="36"
+          class="navBar__user"
       >
         <span class="white--text text-h7">{{ text }}</span>
       </v-avatar>
@@ -111,5 +109,9 @@ export default {
 </script>
 
 <style scoped>
+
+.navBar__user{
+  margin-left: .2rem;
+}
 
 </style>
