@@ -1,6 +1,7 @@
 <template>
   <div>
     <general/>
+    <admin-module_bar class="adminModule__bar"/>
 
     <div class="container__body Roboto-Black">
       <div class="adminModule__target">
@@ -8,7 +9,6 @@
         <img src="../static/people.png" class="adminModule__target--img"/></div>
       <div class="adminModule__target">
         Grupos
-
         <img src="../static/aula.png" class="adminModule__target--img"/></div>
     </div>
   </div>
@@ -17,9 +17,10 @@
 <script>
 import General from "../layouts/general";
 import router from "../router";
+import AdminModule_bar from "../components/navigationBars/adminModule_bar";
 export default {
   name: "AdminModule",
-  components: {General},
+  components: {AdminModule_bar, General},
 
   methods: {
     validateUser(){
@@ -36,6 +37,11 @@ export default {
 </script>
 
 <style scoped>
+.adminModule__bar{
+  width: 80%;
+  margin: 1rem 0 0 10%;
+}
+
 .container__body{
   width: 60%;
   margin: 1rem 0 0 20%;

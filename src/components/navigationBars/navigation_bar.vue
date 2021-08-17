@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {auth} from "../util";
+import {auth} from "../../util";
 import {mapActions} from "vuex";
 
 export default {

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Navigation_bar from "../components/navigation_bar";
+import Navigation_bar from "../components/navigationBars/navigation_bar";
 export default {
   name: "general",
   components: {Navigation_bar}
