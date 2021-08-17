@@ -4,9 +4,21 @@
 
     <div class="adminStaff">
       <admin-module_bar/>
-      <h1 class="adminStaff__title Roboto-Black">
-        Personal
-      </h1>
+      <div class="adminStaff--banner">
+        <h1 class="adminStaff__title Roboto-Black">
+          Personal
+        </h1>
+        <v-spacer/>
+        <v-btn
+            color="#1F9FE3"
+            dark
+        >
+          <v-icon left>
+            mdi-plus
+          </v-icon>
+          Añadir
+        </v-btn>
+      </div>
       <br/>
 
       <staff-table :staff="staff"/>
@@ -47,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+.adminStaff--banner{
+  display: flex;
+  justify-content: space-between;
+}
 
 .adminStaff{
   width: 80%;
