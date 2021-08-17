@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="search__bar">
-      <v-spacer/>
       <v-btn
-          class="search__barBtn"
           outlined
-          color="#525252"
+          color="#393939"
+          @click="$router.go(-1)"
       >
-        Buscar
-        <v-icon right>
-          mdi-magnify
+        <v-icon left>
+          mdi-arrow-left
         </v-icon>
+        Regresar
       </v-btn>
+      <v-spacer/>
     </div>
 
     <v-divider/>
@@ -32,11 +32,9 @@ export default {
 
 .search__bar{
   display: flex;
-}
-
-.search__barBtn{
-  margin-left: 1rem;
   margin-bottom: .5rem;
 }
+
+
 
 </style>
