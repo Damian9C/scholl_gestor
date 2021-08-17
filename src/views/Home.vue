@@ -7,10 +7,10 @@
 
       <div class="container__body--cards">
 
+        <admin_item v-if="position === 'admin'"/>
         <div v-for="lesson in lessons">
           <card_item :lesson="lesson"/>
         </div>
-        <admin_item v-if="position === 'admin'"/>
 
       </div>
     </div>

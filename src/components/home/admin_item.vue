@@ -8,7 +8,7 @@
         })"
     >
       <div>
-        <div class="card__item--title Roboto-Black">Modulo Administrativo</div><br/>
+        <div class="card__item--title Roboto-Bold">Modulo Administrativo</div><br/>
       </div>
 
       <img src="../../static/Imagen1.png" class="card__item--img"/>

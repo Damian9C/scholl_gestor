@@ -47,7 +47,7 @@ export default {
 <style scoped>
 
 .table{
-  box-shadow: 0px 10px 14px 0px rgba(163,163,163,.5);
+  box-shadow: 0 10px 14px 0 rgba(163,163,163,.5);
 }
 
 .table__item :hover{

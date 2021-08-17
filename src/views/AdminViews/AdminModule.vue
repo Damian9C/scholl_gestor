@@ -4,20 +4,30 @@
     <admin-module_bar class="adminModule__bar"/>
 
     <div class="container__body Roboto-Black">
-      <div class="adminModule__target">
+      <div
+          class="adminModule__target"
+          @click="$router.push({
+            path:`/AdminModule/AdminStaff`,
+          })"
+      >
         Personal
-        <img src="../static/people.png" class="adminModule__target--img"/></div>
-      <div class="adminModule__target">
+        <img src="../../static/people.png" class="adminModule__target--img"/></div>
+      <div
+          class="adminModule__target"
+          @click="$router.push({
+            path:`/AdminModule/AdminGroups`,
+          })"
+      >
         Grupos
-        <img src="../static/aula.png" class="adminModule__target--img"/></div>
+        <img src="../../static/aula.png" class="adminModule__target--img"/></div>
     </div>
   </div>
 </template>
 
 <script>
-import General from "../layouts/general";
-import router from "../router";
-import AdminModule_bar from "../components/navigationBars/adminModule_bar";
+import General from "../../layouts/general";
+import router from "../../router";
+import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 export default {
   name: "AdminModule",
   components: {AdminModule_bar, General},
@@ -51,7 +61,7 @@ export default {
 .adminModule__target{
   color: rgba(255, 255, 255, .98);
   margin: 2rem;
-  height: 12vw;
+  height: 20vh;
   padding: 3rem;
 
   background: #0974d9;

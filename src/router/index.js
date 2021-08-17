@@ -5,7 +5,9 @@ import Login from "../views/Login";
 import lesson from "../views/Lesson";
 import student from "../views/Student";
 import {auth} from "../util";
-import AdminModule from "../views/AdminModule";
+import AdminModule from "../views/AdminViews/AdminModule";
+import AdminStaff from "../views/AdminViews/AdminStaff";
+import AdminGroups from "../views/AdminViews/AdminGroups";
 
 Vue.use(VueRouter)
 
@@ -31,6 +33,22 @@ const routes = [
     path: '/AdminModule',
     name: 'AdminModule',
     component: AdminModule,
+    meta:{
+      requestAuth: true
+    }
+  },
+  {
+    path: '/AdminModule/AdminStaff',
+    name: 'AdminStaff',
+    component: AdminStaff,
+    meta:{
+      requestAuth: true
+    }
+  },
+  {
+    path: '/AdminModule/AdminGroups',
+    name: 'AdminGroups',
+    component: AdminGroups,
     meta:{
       requestAuth: true
     }
