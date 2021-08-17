@@ -10,6 +10,7 @@
         <div v-for="lesson in lessons">
           <card_item :lesson="lesson"/>
         </div>
+        <admin_item v-if="position === 'admin'"/>
 
       </div>
     </div>
@@ -20,17 +21,20 @@
   import General from "../layouts/general";
   import Card_item from "../components/home/card_item";
   import Search_bar from "../components/search_bar";
+  import Admin_item from "../components/home/admin_item";
 
   export default {
     name: 'Home',
     components: {
+      Admin_item,
       Search_bar,
       Card_item,
       General,
     },
 
     data: () => ({
-      lessons: []
+      lessons: [],
+      position: null,
     }),
 
     methods:{
@@ -41,6 +45,7 @@
 
     async mounted() {
       this.getLessons();
+      this.position = this.$store.state.user.position
     }
   }
 </script>

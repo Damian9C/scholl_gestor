@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import lesson from "../views/Lesson";
 import student from "../views/Student";
 import {auth} from "../util";
+import AdminModule from "../views/AdminModule";
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,14 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home,
+    meta:{
+      requestAuth: true
+    }
+  },
+  {
+    path: '/AdminModule',
+    name: 'AdminModule',
+    component: AdminModule,
     meta:{
       requestAuth: true
     }
