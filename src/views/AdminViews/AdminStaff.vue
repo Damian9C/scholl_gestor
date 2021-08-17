@@ -9,15 +9,80 @@
           Personal
         </h1>
         <v-spacer/>
-        <v-btn
-            color="#1F9FE3"
-            dark
+        <v-dialog
+            v-model="showAddStaff"
+            width="35vw"
+            persistent
         >
-          <v-icon left>
-            mdi-plus
-          </v-icon>
-          Añadir
-        </v-btn>
+          <template v-slot:activator="{on, attrs}">
+            <v-btn
+                color="#1F9FE3"
+                dark
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon left>
+                mdi-plus
+              </v-icon>
+              Añadir
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              Añadir Personal
+            </v-card-title><br/>
+
+            <v-card-text>
+              <v-text-field
+                  label="Nombre"
+                  v-model="name"
+              ></v-text-field>
+
+              <v-text-field
+                  label="Email"
+                  v-model="email"
+              ></v-text-field>
+
+              <v-text-field
+                  label="Id"
+                  v-model="userId"
+              ></v-text-field>
+
+              <v-select
+                  :items="positions"
+                  label="Cargo"
+                  v-model="positionUser"
+              ></v-select>
+
+              <v-text-field
+                  label="Contraseña"
+                  v-model="password"
+                  hint="Contraseña temporal"
+              ></v-text-field>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="red"
+                  text
+                  @click="showAddStaff = false"
+              >
+                Cancelar
+              </v-btn>
+              <v-btn
+                  dark
+                  color="#51B4E9"
+                  @click=""
+              >
+                Guardar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
       <br/>
 
@@ -37,6 +102,15 @@ export default {
   components: {StaffTable, AdminModule_bar, General},
   data: () => ({
     staff: [],
+    showAddStaff: false,
+
+    positions: ['Administrador','Docente'],
+
+    name: '',
+    email: '',
+    userId: '',
+    positionUser: '',
+    password: '',
   }),
 
   methods:{
