@@ -37,28 +37,33 @@
               <v-text-field
                   label="Nombre"
                   v-model="name"
+                  :rules="[rules.required]"
               ></v-text-field>
 
               <v-text-field
                   label="Email"
                   v-model="email"
+                  :rules="[rules.required]"
               ></v-text-field>
 
               <v-text-field
                   label="Id"
                   v-model="userId"
+                  :rules="[rules.required]"
               ></v-text-field>
 
               <v-select
                   :items="positions"
                   label="Cargo"
                   v-model="positionUser"
+                  :rules="[rules.required]"
               ></v-select>
 
               <v-text-field
                   label="Contraseña"
                   v-model="password"
                   hint="Contraseña temporal"
+                  :rules="[rules.required]"
               ></v-text-field>
             </v-card-text>
 
@@ -76,7 +81,7 @@
               <v-btn
                   dark
                   color="#51B4E9"
-                  @click=""
+                  @click="saveNewUser()"
               >
                 Guardar
               </v-btn>
@@ -97,6 +102,7 @@ import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {getAllStaff} from "../../util/staff";
 import StaffTable from "../../components/adminCmp/staffTable";
+import {auth} from "../../util";
 export default {
   name: "AdminStaff",
   components: {StaffTable, AdminModule_bar, General},
@@ -111,6 +117,10 @@ export default {
     userId: '',
     positionUser: '',
     password: '',
+
+    rules: {
+      required: value => !!value || 'Obligatorio'
+    },
   }),
 
   methods:{
@@ -120,10 +130,21 @@ export default {
       data.forEach(e => {
         this.staff.push(e.data())
       });
-      console.log(this.staff)
-
     },
 
+    async saveNewUser(){
+
+      if (this.name !== '' && this.email !== '' && this.userId !== '' && this.positionUser !== '' && this.password !== ''){
+        auth.createUserWithEmailAndPassword(this.email, this.password)
+            .then((userCredentil) => {
+              console.log('creado' + userCredentil)
+            }).catch(e => {
+          console.log(e)
+        })
+      }else{
+        alert('LLene los campos para continuar')
+      }
+    }
   },
 
   mounted() {
