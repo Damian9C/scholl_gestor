@@ -149,7 +149,7 @@ export default {
           lessons: [],
         };
 
-        await newStaff(member);
+        await newStaff(member, this.password);
         this.staff.push(member);
 
         this.showAddStaff = false;

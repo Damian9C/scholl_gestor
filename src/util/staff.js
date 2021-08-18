@@ -4,8 +4,9 @@ export async function getAllStaff() {
     return await db.collection('staff').get();
 }
 
-export async function newStaff(member){
-    auth.createUserWithEmailAndPassword(member.email, member.password)
+export function newStaff(member, password){
+    console.log(member)
+    auth.createUserWithEmailAndPassword(member.email, password)
         .then((userCredentil) => {} )
         .catch(e => {
         console.log(e)
