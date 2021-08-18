@@ -100,9 +100,9 @@
 <script>
 import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
-import {getAllStaff} from "../../util/staff";
+import {getAllStaff, newStaff} from "../../util/staff";
 import StaffTable from "../../components/adminCmp/staffTable";
-import {auth} from "../../util";
+import {auth, db} from "../../util";
 export default {
   name: "AdminStaff",
   components: {StaffTable, AdminModule_bar, General},
@@ -135,12 +135,24 @@ export default {
     async saveNewUser(){
 
       if (this.name !== '' && this.email !== '' && this.userId !== '' && this.positionUser !== '' && this.password !== ''){
-        auth.createUserWithEmailAndPassword(this.email, this.password)
-            .then((userCredentil) => {
-              console.log('creado' + userCredentil)
-            }).catch(e => {
-          console.log(e)
-        })
+        let position = 'teacher';
+
+        if (this.positionUser === 'Administrador'){
+          position = 'admin'
+        }
+
+        let member = {
+          email: this.email,
+          name: this.name,
+          id: this.userId,
+          position: position,
+          lessons: [],
+        };
+
+        await newStaff(member);
+        this.staff.push(member);
+
+        this.showAddStaff = false;
       }else{
         alert('LLene los campos para continuar')
       }
