@@ -20,6 +20,14 @@ export function newStaff(member, password){
     })
 }
 
+export async function updateSelectedUser(user) {
+    try {
+        await db.collection('staff').doc(user.id).update(user.data)
+    }catch (e) {
+        alert(e)
+    }
+}
+
 export function deleteSelectedUser(id){
     db.collection('staff').doc(id).delete().then(()=> {
         console.log('borrado')});

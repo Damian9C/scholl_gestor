@@ -121,12 +121,12 @@
             <td>{{ item.data.name }}</td>
             <td>{{ item.data.email }}</td>
             <td>{{ item.data.id }}</td>
-            <td>{{ item.data.position }}</td>
+            <td>{{ positionText(item.data.position) }}</td>
             <td>
               <v-btn
                   small
                   outlined
-                  @click="restartPass(item.data.email)"
+                  @click="showWindow(item)"
               >
                 <v-icon>
                   mdi-pencil
@@ -160,7 +160,7 @@
 
       <div class="adminStaff--banner">
         <v-dialog
-            v-model="showDropStaff"
+            v-model="showUtilityMessage"
             width="35vw"
             persistent
         >
@@ -170,16 +170,78 @@
 
           <v-card>
             <v-card-title class="text-h5 grey lighten-2">
-              Borrrado Exitoso
+              {{ utilityMessage }}
             </v-card-title><br/>
 
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                   color="primary"
-                  @click="showDropStaff = false"
+                  @click="showUtilityMessage = false"
               >
                 Cerrar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+
+      <div class="adminStaff--banner">
+        <v-dialog
+            v-model="showEditStaff"
+            width="35vw"
+            persistent
+        >
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              Editar
+            </v-card-title><br/>
+
+            <v-card-text>
+              <v-text-field
+                  label="Nombre"
+                  v-model="selectedUser.data.name"
+                  :rules="[rules.required]"
+              ></v-text-field>
+
+              <v-text-field
+                  label="Email"
+                  v-model="selectedUser.data.email"
+                  :rules="[rules.required]"
+              ></v-text-field>
+
+              <v-text-field
+                  label="Id"
+                  v-model="selectedUser.data.id"
+                  :rules="[rules.required]"
+              ></v-text-field>
+
+              <v-select
+                  :items="positions"
+                  label="Cargo"
+                  v-model="selectedUser.data.position"
+                  :rules="[rules.required]"
+              ></v-select>
+
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="red"
+                  text
+                  @click="showEditStaff = false"
+              >
+                Cancelar
+              </v-btn>
+              <v-btn
+                  dark
+                  color="#51B4E9"
+                  @click="updateUser()"
+              >
+                Actualizar
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -193,16 +255,27 @@
 <script>
 import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
-import {deleteSelectedUser, getAllStaff, newStaff, sendMailRecovery} from "../../util/staff";
-import StaffTable from "../../components/adminCmp/staffTable";
+import {deleteSelectedUser, getAllStaff, newStaff, sendMailRecovery, updateSelectedUser} from "../../util/staff";
 export default {
   name: "AdminStaff",
-  components: {StaffTable, AdminModule_bar, General},
+  components: {AdminModule_bar, General},
   data: () => ({
     staff: [],
-    showAddStaff: false,
-    showDropStaff: false,
+    selectedUser: {
+      id: '',
+      data:{
+        name: '',
+        email: '',
+        user: '',
+        position: '',
+      }
+    },
 
+    showAddStaff: false,
+    showUtilityMessage: false,
+    showEditStaff: false,
+
+    utilityMessage: '',
     positions: ['Administrador','Docente'],
 
     name: '',
@@ -217,6 +290,18 @@ export default {
   }),
 
   methods:{
+    restartPass(mail){
+      this.utilityMessage = 'Correo para restablecer contraseña enviado';
+      this.showUtilityMessage = true;
+
+      sendMailRecovery(mail);
+    },
+
+    showWindow(item){
+      this.selectedUser = item;
+      this.showEditStaff = true;
+    },
+
     async getStaff(){
       this.staff = []
       let data = await getAllStaff();
@@ -227,11 +312,14 @@ export default {
           id: e.id,
         })
       });
-      console.log(this.staff)
     },
 
     async saveNewUser(){
       this.showAddStaff = false;
+
+      this.utilityMessage = 'Usuario Creado';
+      this.showUtilityMessage = true;
+
       if (this.name !== '' && this.email !== '' && this.userId !== '' && this.positionUser !== '' && this.password !== ''){
         let position = 'teacher';
         if (this.positionUser === 'Administrador'){
@@ -255,14 +343,30 @@ export default {
       }
     },
 
-    restartPass(mail){
-      sendMailRecovery(mail);
+    async updateUser(){
+      this.showEditStaff = false;
+      await updateSelectedUser(this.selectedUser);
+
+      await this.getStaff();
+
+      this.utilityMessage = 'Datos Guardados'
+      this.showUtilityMessage = true
     },
 
     async dropUser(user){
       await deleteSelectedUser(user);
       await this.getStaff();
-      this.showDropStaff = true
+
+      this.utilityMessage = 'Borrado Exitoso'
+      this.showUtilityMessage = true
+    },
+
+    positionText(position){
+      if (position === "admin"){
+        return 'Administrador'
+      }else {
+        return 'Docente'
+      }
     },
   },
 
