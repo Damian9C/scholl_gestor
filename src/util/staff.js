@@ -19,3 +19,16 @@ export function newStaff(member, password){
         console.log('error')
     })
 }
+
+export function deleteSelectedUser(id){
+    db.collection('staff').doc(id).delete().then(()=> {
+        console.log('borrado')});
+}
+
+export async function sendMailRecovery(mail){
+    try {
+        await auth.sendPasswordResetEmail(mail)
+    }catch (e) {
+        alert(e)
+    }
+}

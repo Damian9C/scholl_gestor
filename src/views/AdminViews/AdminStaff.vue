@@ -91,7 +91,72 @@
       </div>
       <br/>
 
-      <staff-table :staff="staff"/>
+      <div class="staffTable">
+        <v-simple-table>
+          <thead>
+          <tr>
+            <th class="text-left">
+              Nombre
+            </th>
+            <th class="text-left">
+              Email
+            </th>
+            <th class="text-left">
+              Id
+            </th>
+            <th class="text-left">
+              Cargo
+            </th>
+            <th class="text-left">
+              Opciones
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+              v-for="item in staff"
+              :key="item.name"
+              class="staffTable__item"
+          >
+            <td>{{ item.data.name }}</td>
+            <td>{{ item.data.email }}</td>
+            <td>{{ item.data.id }}</td>
+            <td>{{ item.data.position }}</td>
+            <td>
+              <v-btn
+                  small
+                  outlined
+                  @click="restartPass(item.data.email)"
+              >
+                <v-icon>
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+
+              <v-btn
+                  small
+                  outlined
+                  @click="restartPass(item.data.email)"
+              >
+                <v-icon>
+                  mdi-lock-reset
+                </v-icon>
+              </v-btn>
+
+              <v-btn
+                  small
+                  outlined
+                  @click="dropUser(item.id)"
+              >
+                <v-icon>
+                  mdi-trash-can
+                </v-icon>
+              </v-btn>
+            </td>
+          </tr>
+          </tbody>
+        </v-simple-table>
+      </div>
 
     </div>
   </div>
@@ -100,9 +165,8 @@
 <script>
 import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
-import {getAllStaff, newStaff} from "../../util/staff";
+import {deleteSelectedUser, getAllStaff, newStaff, sendMailRecovery} from "../../util/staff";
 import StaffTable from "../../components/adminCmp/staffTable";
-import {auth, db} from "../../util";
 export default {
   name: "AdminStaff",
   components: {StaffTable, AdminModule_bar, General},
@@ -128,17 +192,20 @@ export default {
       let data = await getAllStaff();
 
       data.forEach(e => {
-        this.staff.push(e.data())
+        this.staff.push({
+          data: e.data(),
+          id: e.id,
+        })
       });
+      console.log(this.staff)
     },
 
     async saveNewUser(){
 
       if (this.name !== '' && this.email !== '' && this.userId !== '' && this.positionUser !== '' && this.password !== ''){
         let position = 'teacher';
-
         if (this.positionUser === 'Administrador'){
-          position = 'admin'
+          position = 'admin';
         }
 
         let member = {
@@ -154,13 +221,22 @@ export default {
 
         this.showAddStaff = false;
       }else{
-        alert('LLene los campos para continuar')
+        alert('LLene los campos para continuar');
       }
-    }
+    },
+
+    restartPass(mail){
+      sendMailRecovery(mail);
+    },
+
+    async dropUser(user){
+      await deleteSelectedUser(user);
+      await this.getStaff();
+    },
   },
 
-  mounted() {
-    this.getStaff();
+  async mounted() {
+    await this.getStaff();
   }
 }
 </script>
@@ -178,5 +254,9 @@ export default {
 
 .adminStaff__title{
   font-size: 2.5rem;
+}
+
+.staffTable{
+  box-shadow: 0 10px 14px 0 rgba(163,163,163,.5);
 }
 </style>
