@@ -158,6 +158,34 @@
         </v-simple-table>
       </div>
 
+      <div class="adminStaff--banner">
+        <v-dialog
+            v-model="showDropStaff"
+            width="35vw"
+            persistent
+        >
+          <template v-slot:activator="{on, attrs}">
+
+          </template>
+
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              Borrrado Exitoso
+            </v-card-title><br/>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="primary"
+                  @click="showDropStaff = false"
+              >
+                Cerrar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+
     </div>
   </div>
 </template>
@@ -173,6 +201,7 @@ export default {
   data: () => ({
     staff: [],
     showAddStaff: false,
+    showDropStaff: false,
 
     positions: ['Administrador','Docente'],
 
@@ -189,6 +218,7 @@ export default {
 
   methods:{
     async getStaff(){
+      this.staff = []
       let data = await getAllStaff();
 
       data.forEach(e => {
@@ -201,7 +231,7 @@ export default {
     },
 
     async saveNewUser(){
-
+      this.showAddStaff = false;
       if (this.name !== '' && this.email !== '' && this.userId !== '' && this.positionUser !== '' && this.password !== ''){
         let position = 'teacher';
         if (this.positionUser === 'Administrador'){
@@ -217,9 +247,9 @@ export default {
         };
 
         await newStaff(member, this.password);
-        this.staff.push(member);
 
-        this.showAddStaff = false;
+        await this.getStaff()
+
       }else{
         alert('LLene los campos para continuar');
       }
@@ -232,6 +262,7 @@ export default {
     async dropUser(user){
       await deleteSelectedUser(user);
       await this.getStaff();
+      this.showDropStaff = true
     },
   },
 
