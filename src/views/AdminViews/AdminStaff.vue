@@ -129,7 +129,7 @@
                   @click="showWindow(item)"
               >
                 <v-icon>
-                  mdi-pencil
+                  mdi-pencil-outline
                 </v-icon>
               </v-btn>
 
@@ -149,7 +149,7 @@
                   @click="dropUser(item.id)"
               >
                 <v-icon>
-                  mdi-trash-can
+                  mdi-trash-can-outline
                 </v-icon>
               </v-btn>
             </td>

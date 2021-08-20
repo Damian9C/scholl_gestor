@@ -79,9 +79,7 @@
           >
             <template v-slot:activator="{on, attrs}">
               <v-btn
-                  color="#1F9FE3"
                   outlined
-                  disabled
                   small
                   v-bind="attrs"
                   v-on="on"
@@ -140,6 +138,12 @@
               Grupo
             </th>
             <th class="text-left">
+              Docentes
+            </th>
+            <th class="text-left">
+              Alumnos
+            </th>
+            <th class="text-left">
               Opciones
             </th>
           </tr>
@@ -151,6 +155,7 @@
               class="staffTable__item"
           >
             <td>{{ item.data.technicalName }}</td>
+
             <td>
               <v-btn
                   small
@@ -158,10 +163,33 @@
                   @click=""
               >
                 <v-icon>
-                  mdi-eye
+                  mdi-clipboard-account-outline
                 </v-icon>
               </v-btn>
+            </td>
 
+            <td>
+              <v-btn
+                  small
+                  outlined
+                  @click=""
+              >
+                <v-icon>
+                  mdi-account-plus-outline
+                </v-icon>
+              </v-btn>
+              <v-btn
+                  small
+                  outlined
+                  @click=""
+              >
+                <v-icon>
+                  mdi-folder-plus-outline
+                </v-icon>
+              </v-btn>
+            </td>
+
+            <td>
               <v-dialog
                   v-model="confirmDelete"
                   width="35vw"
@@ -175,7 +203,7 @@
                       v-on="on"
                   >
                     <v-icon>
-                      mdi-trash-can
+                      mdi-trash-can-outline
                     </v-icon>
                   </v-btn>
                 </template>
