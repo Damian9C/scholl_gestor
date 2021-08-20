@@ -22,17 +22,23 @@ export function newStaff(member, password){
 export async function updateSelectedUser(user) {
     try {
         await db.collection('staff').doc(user.id).update(user.data)
-    }catch (e) {alert(e);}
+    }catch (e) {
+        alert(e);
+    }
 }
 
 export async function deleteSelectedUser(id){
     try {
         await db.collection('staff').doc(id).delete()
-    }catch (e) {alert(e);}
+    }catch (e) {
+        alert(e);
+    }
 }
 
 export async function sendMailRecovery(mail){
     try {
         await auth.sendPasswordResetEmail(mail)
-    }catch (e) {alert(e);}
+    }catch (e) {
+        alert(e);
+    }
 }

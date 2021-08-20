@@ -147,10 +147,10 @@
           <tbody>
           <tr
               v-for="item in groups"
-              :key="item.name"
+              :key="item.id"
               class="staffTable__item"
           >
-            <td>{{ item.technicalName }}</td>
+            <td>{{ item.data.technicalName }}</td>
             <td>
               <v-btn
                   small
@@ -162,15 +162,48 @@
                 </v-icon>
               </v-btn>
 
-              <v-btn
-                  small
-                  outlined
-                  @click=""
+              <v-dialog
+                  v-model="confirmDelete"
+                  width="35vw"
+                  persistent
               >
-                <v-icon>
-                  mdi-trash-can
-                </v-icon>
-              </v-btn>
+                <template v-slot:activator="{on, attrs}">
+                  <v-btn
+                      small
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                  >
+                    <v-icon>
+                      mdi-trash-can
+                    </v-icon>
+                  </v-btn>
+                </template>
+
+                <v-card>
+                  <v-card-title class="text-h5 grey lighten-2">
+                    Borrar Grupo?
+                  </v-card-title><br/>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="red"
+                        text
+                        @click="confirmDelete = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                        dark
+                        color="#51B4E9"
+                        @click="deleteSelectedGroup(item)"
+                    >
+                      Borrar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </td>
           </tr>
           </tbody>
@@ -218,7 +251,7 @@ import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {validateUser} from "../../util/utilities";
 import router from "../../router";
-import {addGroup, getGroups, validateGroup} from "../../util/groups";
+import {addGroup, dropGroup, getGroups, validateGroup} from "../../util/groups";
 export default {
   name: "AdminGroups",
   components: {AdminModule_bar, General},
@@ -229,6 +262,7 @@ export default {
     showNewGroup: false,
     promote: false,
     showUtilityMessage: false,
+    confirmDelete: false,
 
     grade: '',
     group: '',
@@ -247,16 +281,29 @@ export default {
       }else{
         this.showNewGroup = false;
         await addGroup(this.grade, (this.group.toUpperCase()));
+        this.groups = await getGroups();
       }
-    }
+    },
+
+    async deleteSelectedGroup(item){
+      this.confirmDelete = false;
+
+      await dropGroup(item.id);
+      this.groups = await getGroups();
+
+      this.utilityMessage = 'Grupo Borrado';
+      this.messageContent = '';
+      this.showUtilityMessage = true;
+    },
   },
 
   async mounted() {
     if (validateUser(this.$store.state.user.position)){
-      router.push('/home')
+      await router.push('/home')
     }
 
     this.groups = await getGroups();
+    console.log(this.groups)
   }
 }
 </script>

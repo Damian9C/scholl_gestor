@@ -5,7 +5,10 @@ export async function getGroups() {
     let groups = []
 
     data.forEach((item) => {
-        groups.push(item.data())
+        groups.push({
+            data: item.data(),
+            id: item.id,
+        })
     })
 
     return groups
@@ -32,4 +35,12 @@ export function validateGroup( groups, newGroup ){
     });
 
     return validate;
+}
+
+export async function dropGroup(item) {
+    try {
+        await db.collection('groups').doc(item).delete()
+    }catch (e) {
+        alert(e)
+    }
 }
