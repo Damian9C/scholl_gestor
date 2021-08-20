@@ -26,22 +26,17 @@
 
 <script>
 import General from "../../layouts/general";
-import router from "../../router";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
+import {validateUser} from "../../util/utilities";
+import router from "../../router";
 export default {
   name: "AdminModule",
   components: {AdminModule_bar, General},
 
-  methods: {
-    validateUser(){
-      if (this.$store.state.user.position !== 'admin'){
-        router.push('Home')
-      }
-    }
-  },
-
   mounted() {
-    this.validateUser();
+    if (validateUser(this.$store.state.user.position)){
+      router.push('/home')
+    }
   }
 }
 </script>

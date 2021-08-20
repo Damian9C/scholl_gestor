@@ -256,6 +256,8 @@
 import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {deleteSelectedUser, getAllStaff, newStaff, sendMailRecovery, updateSelectedUser} from "../../util/staff";
+import {validateUser} from "../../util/utilities";
+import router from "../../router";
 export default {
   name: "AdminStaff",
   components: {AdminModule_bar, General},
@@ -372,6 +374,9 @@ export default {
 
   async mounted() {
     await this.getStaff();
+    if (validateUser(this.$store.state.user.position)){
+      router.push('/home')
+    }
   }
 }
 </script>
