@@ -199,7 +199,6 @@ export default {
      async changePass(){
        if (this.password === this.repeatPassword){
          await updatePass(this.password);
-         console.log('Actualizado')
 
          this.showChangePass = false;
          this.showAlert = true;
