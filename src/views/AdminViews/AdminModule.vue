@@ -1,6 +1,7 @@
 <template>
   <div>
     <general/>
+
     <admin-module_bar class="adminModule__bar"/>
 
     <div class="container__body Roboto-Black">
