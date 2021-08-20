@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import Table_component from "../components/lesson/table_component";
-import General from "../layouts/general";
-import Return_bar from "../components/navigationBars/return_bar";
-import { getStudents } from "../util/utilities";
+import Table_component from "../../components/lesson/table_component";
+import General from "../../layouts/general";
+import Return_bar from "../../components/navigationBars/return_bar";
+import { getStudents } from "../../util/utilities";
 export default {
   name: "lesson",
   components: {Return_bar, General, Table_component},

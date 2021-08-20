@@ -18,10 +18,10 @@
 </template>
 
 <script>
-  import General from "../layouts/general";
-  import Card_item from "../components/home/card_item";
-  import Search_bar from "../components/navigationBars/search_bar";
-  import Admin_item from "../components/home/admin_item";
+  import General from "../../layouts/general";
+  import Card_item from "../../components/home/card_item";
+  import Search_bar from "../../components/navigationBars/search_bar";
+  import Admin_item from "../../components/home/admin_item";
 
   export default {
     name: 'Home',

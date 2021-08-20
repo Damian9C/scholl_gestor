@@ -58,11 +58,11 @@
 </template>
 
 <script>
-import Search_bar from "../components/navigationBars/search_bar";
-import Information from "../components/students/information";
-import General from "../layouts/general";
-import Return_bar from "../components/navigationBars/return_bar";
-import {db} from "../util";
+import Search_bar from "../../components/navigationBars/search_bar";
+import Information from "../../components/students/information";
+import General from "../../layouts/general";
+import Return_bar from "../../components/navigationBars/return_bar";
+import {db} from "../../util";
 
 export default {
   name: "student",
