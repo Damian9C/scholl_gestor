@@ -73,7 +73,7 @@
           </v-dialog>
 
           <v-dialog
-              v-model="promote"
+              v-model="showPromote"
               width="35vw"
               persistent
           >
@@ -111,7 +111,7 @@
                 <v-btn
                     color="red"
                     text
-                    @click="promote = false"
+                    @click="showPromote = false"
                 >
                   Cancelar
                 </v-btn>
@@ -138,10 +138,10 @@
               Grupo
             </th>
             <th class="text-left">
-              Docentes
+              Alumnos
             </th>
             <th class="text-left">
-              Alumnos
+              Docentes
             </th>
             <th class="text-left">
               Opciones
@@ -157,27 +157,62 @@
             <td>{{ item.data.technicalName }}</td>
 
             <td>
-              <v-btn
-                  small
-                  outlined
-                  @click=""
+              <v-dialog
+                  v-model="showAddStudent"
+                  width="35vw"
+                  persistent
               >
-                <v-icon>
-                  mdi-clipboard-account-outline
-                </v-icon>
-              </v-btn>
-            </td>
+                <template v-slot:activator="{on, attrs}">
+                  <v-btn
+                      small
+                      outlined
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="selectedGroup = item"
+                  >
+                    <v-icon>
+                      mdi-account-plus-outline
+                    </v-icon>
+                  </v-btn>
+                </template>
 
-            <td>
-              <v-btn
-                  small
-                  outlined
-                  @click=""
-              >
-                <v-icon>
-                  mdi-account-plus-outline
-                </v-icon>
-              </v-btn>
+                <v-card>
+                  <v-card-title class="text-h5 grey lighten-2">
+                    Nuevo Alumno
+                  </v-card-title><br/>
+
+                  <v-card-text>
+                    <v-text-field
+                        label="Nombre"
+                        v-model="name"
+                        :rules="[rules.required]"
+                    ></v-text-field>
+                    <v-text-field
+                        label="Numero de Control"
+                        v-model="numControl"
+                        :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="red"
+                        text
+                        @click="showAddStudent = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                        dark
+                        color="#51B4E9"
+                        @click="addNewStudent(selectedGroup)"
+                    >
+                      Guardar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
               <v-btn
                   small
                   outlined
@@ -190,8 +225,20 @@
             </td>
 
             <td>
+              <v-btn
+                  small
+                  outlined
+                  @click=""
+              >
+                <v-icon>
+                  mdi-clipboard-account-outline
+                </v-icon>
+              </v-btn>
+            </td>
+
+            <td>
               <v-dialog
-                  v-model="confirmDelete"
+                  v-model="showConfirmDelete"
                   width="35vw"
                   persistent
               >
@@ -218,7 +265,7 @@
                     <v-btn
                         color="red"
                         text
-                        @click="confirmDelete = false"
+                        @click="showConfirmDelete = false"
                     >
                       Cancelar
                     </v-btn>
@@ -279,7 +326,7 @@ import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {validateUser} from "../../util/utilities";
 import router from "../../router";
-import {addGroup, dropGroup, getGroups, validateGroup} from "../../util/groups";
+import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups";
 export default {
   name: "AdminGroups",
   components: {AdminModule_bar, General},
@@ -287,13 +334,23 @@ export default {
   data: () => ({
     groups: null,
 
+    rules: {
+      required: value => !!value || 'Obligatorio'
+    },
+
     showNewGroup: false,
-    promote: false,
+    showPromote: false,
     showUtilityMessage: false,
-    confirmDelete: false,
+    showConfirmDelete: false,
+    showAddStudent: false,
 
     grade: '',
     group: '',
+
+    selectedGroup: null,
+
+    name: '',
+    numControl: '',
 
     utilityMessage: '',
     messageContent: '',
@@ -313,8 +370,24 @@ export default {
       }
     },
 
+    async addNewStudent(item){
+      this.showAddStudent = false;
+
+      item.data.students.push({
+        id: this.numControl,
+        lessons: [],
+        medicalCondition: [],
+        name: this.name,
+        reports: [],
+      });
+
+      console.log(item)
+
+      await updateGroup(item);
+    },
+
     async deleteSelectedGroup(item){
-      this.confirmDelete = false;
+      this.showConfirmDelete = false;
 
       await dropGroup(item.id);
       this.groups = await getGroups();
