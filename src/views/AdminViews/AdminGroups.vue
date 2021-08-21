@@ -187,7 +187,7 @@
               <v-btn
                   small
                   outlined
-                  @click=""
+                  @click="selectedGroup = item; showCrudTeacher = true; titleGroup = item.data.technicalName"
                   color="#2181ff"
               >
                 <v-icon>
@@ -200,7 +200,7 @@
               <v-btn
                   small
                   outlined
-                  @click="showConfirmDelete = true"
+                  @click=""
               >
                 <v-icon>
                   mdi-vector-combine
@@ -212,7 +212,7 @@
               <v-btn
                   small
                   outlined
-                  @click="showConfirmDelete = true"
+                  @click="selectedGroup = item; showConfirmDelete = true"
                   color="red"
               >
                 <v-icon>
@@ -250,6 +250,38 @@
                 dark
                 color="#51B4E9"
                 @click="deleteSelectedGroup(selectedGroup)"
+            >
+              Borrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+          v-model="showCrudTeacher"
+          width="35vw"
+          persistent
+      >
+        <template v-slot:activator="{on, attrs}"/>
+
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Grupo {{titleGroup}}
+          </v-card-title><br/>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                text
+                @click="showCrudTeacher = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+                dark
+                color="#51B4E9"
+                @click=""
             >
               Borrar
             </v-btn>
@@ -358,6 +390,9 @@ export default {
     showUtilityMessage: false,
     showConfirmDelete: false,
     showAddStudent: false,
+    showCrudTeacher: false,
+
+    titleGroup: '',
 
     grade: '',
     group: '',
