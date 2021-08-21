@@ -163,7 +163,7 @@
               <v-btn
                   small
                   outlined
-                  @click="selectedGroup = item; showAddStudent = true"
+                  @click.stop="selectedGroup = item; showAddStudent = true"
                   color="#009127"
               >
                 <v-icon>
@@ -269,6 +269,47 @@
             Grupo {{titleGroup}}
           </v-card-title><br/>
 
+          <v-card-text>
+            <div>
+              <v-simple-table>
+                <thead>
+                <tr>
+                  <th class="text-left">
+                    Maestro
+                  </th>
+                  <th class="text-left">
+                    Clase
+                  </th>
+                  <th class="text-left">
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr
+                    v-for="item in selectedGroup.data.currentTeachers"
+                    class="staffTable__item"
+                >
+                  <td>{{ item.teacher }}</td>
+
+                  <td>
+                    <v-btn
+                        small
+                        outlined
+                        @click="selectedGroup = item; showAddStudent = true"
+                        color="#009127"
+                    >
+                      <v-icon>
+                        mdi-account-plus-outline
+                      </v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+                </tbody>
+              </v-simple-table>
+            </div>
+
+          </v-card-text>
+
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -334,35 +375,33 @@
         </v-card>
       </v-dialog>
 
-      <div>
-        <v-dialog
-            v-model="showUtilityMessage"
-            width="35vw"
-            persistent
-        >
-          <template v-slot:activator="{on, attrs}"/>
+      <v-dialog
+          v-model="showUtilityMessage"
+          width="35vw"
+          persistent
+      >
+        <template v-slot:activator="{on, attrs}"/>
 
-          <v-card>
-            <v-card-title class="text-h5 grey lighten-2">
-              {{ utilityMessage }}
-            </v-card-title><br/>
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            {{ utilityMessage }}
+          </v-card-title><br/>
 
-            <v-card-text>
-              {{ messageContent }}
-            </v-card-text>
+          <v-card-text>
+            {{ messageContent }}
+          </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                  color="primary"
-                  @click="showUtilityMessage = false"
-              >
-                Cerrar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="primary"
+                @click="showUtilityMessage = false"
+            >
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
     </div>
   </div>
@@ -381,10 +420,6 @@ export default {
   data: () => ({
     groups: null,
 
-    rules: {
-      required: value => !!value || 'Obligatorio'
-    },
-
     showNewGroup: false,
     showPromote: false,
     showUtilityMessage: false,
@@ -397,13 +432,23 @@ export default {
     grade: '',
     group: '',
 
-    selectedGroup: null,
-
     name: '',
     numControl: '',
 
     utilityMessage: '',
     messageContent: '',
+
+    selectedGroup: {
+      data:{
+        currentTeachers: {
+          teacher:'',
+        },
+      }
+    },
+
+    rules: {
+      required: value => !!value || 'Obligatorio'
+    },
   }),
 
   methods:{
@@ -458,6 +503,7 @@ export default {
     }
 
     this.groups = await getGroups();
+    console.log(this.groups)
   }
 }
 </script>
