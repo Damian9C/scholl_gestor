@@ -47,7 +47,6 @@ export async function dropGroup(item) {
 
 export async function updateGroup(item) {
     try {
-        console.log(item)
         await db.collection('groups').doc(item.id).update(item.data)
     }catch (e) {
         alert(e)

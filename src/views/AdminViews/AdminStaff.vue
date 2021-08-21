@@ -127,6 +127,7 @@
                   small
                   outlined
                   @click="showWindow(item)"
+                  color="#009127"
               >
                 <v-icon>
                   mdi-pencil-outline
@@ -137,6 +138,7 @@
                   small
                   outlined
                   @click="restartPass(item.data.email)"
+                  color="#2181ff"
               >
                 <v-icon>
                   mdi-lock-reset
@@ -147,6 +149,7 @@
                   small
                   outlined
                   @click="dropUser(item.id)"
+                  color="red"
               >
                 <v-icon>
                   mdi-trash-can-outline

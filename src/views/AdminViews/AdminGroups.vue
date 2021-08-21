@@ -144,6 +144,9 @@
               Docentes
             </th>
             <th class="text-left">
+              Generar Materias
+            </th>
+            <th class="text-left">
               Opciones
             </th>
           </tr>
@@ -161,6 +164,7 @@
                   small
                   outlined
                   @click="selectedGroup = item; showAddStudent = true"
+                  color="#009127"
               >
                 <v-icon>
                   mdi-account-plus-outline
@@ -171,6 +175,7 @@
                   small
                   outlined
                   @click=""
+                  color="#009127"
               >
                 <v-icon>
                   mdi-folder-plus-outline
@@ -183,6 +188,7 @@
                   small
                   outlined
                   @click=""
+                  color="#2181ff"
               >
                 <v-icon>
                   mdi-clipboard-account-outline
@@ -195,6 +201,19 @@
                   small
                   outlined
                   @click="showConfirmDelete = true"
+              >
+                <v-icon>
+                  mdi-vector-combine
+                </v-icon>
+              </v-btn>
+            </td>
+
+            <td>
+              <v-btn
+                  small
+                  outlined
+                  @click="showConfirmDelete = true"
+                  color="red"
               >
                 <v-icon>
                   mdi-trash-can-outline
@@ -383,7 +402,7 @@ export default {
       this.numControl = '';
       this.name = '';
 
-      updateGroup(item);
+      await updateGroup(item);
     },
 
     async deleteSelectedGroup(item){
