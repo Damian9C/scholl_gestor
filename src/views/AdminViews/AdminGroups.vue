@@ -157,62 +157,16 @@
             <td>{{ item.data.technicalName }}</td>
 
             <td>
-              <v-dialog
-                  v-model="showAddStudent"
-                  width="35vw"
-                  persistent
+              <v-btn
+                  small
+                  outlined
+                  @click="selectedGroup = item; showAddStudent = true"
               >
-                <template v-slot:activator="{on, attrs}">
-                  <v-btn
-                      small
-                      outlined
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="selectedGroup = item"
-                  >
-                    <v-icon>
-                      mdi-account-plus-outline
-                    </v-icon>
-                  </v-btn>
-                </template>
+                <v-icon>
+                  mdi-account-plus-outline
+                </v-icon>
+              </v-btn>
 
-                <v-card>
-                  <v-card-title class="text-h5 grey lighten-2">
-                    Nuevo Alumno
-                  </v-card-title><br/>
-
-                  <v-card-text>
-                    <v-text-field
-                        label="Nombre"
-                        v-model="name"
-                        :rules="[rules.required]"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Numero de Control"
-                        v-model="numControl"
-                        :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="red"
-                        text
-                        @click="showAddStudent = false"
-                    >
-                      Cancelar
-                    </v-btn>
-                    <v-btn
-                        dark
-                        color="#51B4E9"
-                        @click="addNewStudent(selectedGroup)"
-                    >
-                      Guardar
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
               <v-btn
                   small
                   outlined
@@ -237,53 +191,97 @@
             </td>
 
             <td>
-              <v-dialog
-                  v-model="showConfirmDelete"
-                  width="35vw"
-                  persistent
+              <v-btn
+                  small
+                  outlined
+                  @click="showConfirmDelete = true"
               >
-                <template v-slot:activator="{on, attrs}">
-                  <v-btn
-                      small
-                      outlined
-                      v-bind="attrs"
-                      v-on="on"
-                  >
-                    <v-icon>
-                      mdi-trash-can-outline
-                    </v-icon>
-                  </v-btn>
-                </template>
-
-                <v-card>
-                  <v-card-title class="text-h5 grey lighten-2">
-                    Borrar Grupo?
-                  </v-card-title><br/>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="red"
-                        text
-                        @click="showConfirmDelete = false"
-                    >
-                      Cancelar
-                    </v-btn>
-                    <v-btn
-                        dark
-                        color="#51B4E9"
-                        @click="deleteSelectedGroup(item)"
-                    >
-                      Borrar
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+                <v-icon>
+                  mdi-trash-can-outline
+                </v-icon>
+              </v-btn>
             </td>
           </tr>
           </tbody>
         </v-simple-table>
       </div>
+
+      <v-dialog
+          v-model="showConfirmDelete"
+          width="35vw"
+          persistent
+      >
+        <template v-slot:activator="{on, attrs}"/>
+
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Borrar Grupo?
+          </v-card-title><br/>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                text
+                @click="showConfirmDelete = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+                dark
+                color="#51B4E9"
+                @click="deleteSelectedGroup(selectedGroup)"
+            >
+              Borrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+          v-model="showAddStudent"
+          width="35vw"
+          persistent
+      >
+        <template v-slot:activator="{on, attrs}"/>
+
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Nuevo Alumno
+          </v-card-title><br/>
+
+          <v-card-text>
+            <v-text-field
+                label="Nombre"
+                v-model="name"
+                :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+                label="Numero de Control"
+                v-model="numControl"
+                :rules="[rules.required]"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                text
+                @click="showAddStudent = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+                dark
+                color="#51B4E9"
+                @click="addNewStudent(selectedGroup)"
+            >
+              Guardar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <div>
         <v-dialog
@@ -291,9 +289,7 @@
             width="35vw"
             persistent
         >
-          <template v-slot:activator="{on, attrs}">
-
-          </template>
+          <template v-slot:activator="{on, attrs}"/>
 
           <v-card>
             <v-card-title class="text-h5 grey lighten-2">
@@ -381,9 +377,13 @@ export default {
         reports: [],
       });
 
-      console.log(item)
+      this.utilityMessage = 'Alumno Guardado';
+      this.messageContent = '';
+      this.showUtilityMessage = true;
+      this.numControl = '';
+      this.name = '';
 
-      await updateGroup(item);
+      updateGroup(item);
     },
 
     async deleteSelectedGroup(item){
@@ -404,7 +404,6 @@ export default {
     }
 
     this.groups = await getGroups();
-    console.log(this.groups)
   }
 }
 </script>
