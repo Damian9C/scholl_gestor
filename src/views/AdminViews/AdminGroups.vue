@@ -259,14 +259,65 @@
 
       <v-dialog
           v-model="showCrudTeacher"
-          width="35vw"
+          width="500"
           persistent
+          scrollable
       >
         <template v-slot:activator="{on, attrs}"/>
 
         <v-card>
           <v-card-title class="text-h5 grey lighten-2">
             Grupo {{titleGroup}}
+
+            <v-spacer/>
+
+            <v-dialog
+                v-model="showAddTeacher"
+                width="450"
+            >
+              <template v-slot:activator="{on, attrs}">
+                <v-btn
+                    outlined
+                    small
+                    color="#1F9FE3"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="getTeachers"
+                >
+                  <v-icon left>
+                    mdi-plus
+                  </v-icon>
+                  Añadir Profesor
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                  Añadir Profesor
+                </v-card-title>
+                <v-card-text><br/>
+
+                  <v-select
+                      :items="teachers"
+                      label="Profesor"
+                      v-model="teacherSelected"
+                      :rules="[rules.required]"
+                  >
+                  </v-select>
+
+                  <v-text-field
+                      label="Materia"
+                      v-model="matter"
+                      :rules="[rules.required]"
+                  ></v-text-field>
+
+
+
+                </v-card-text>
+              </v-card>
+
+            </v-dialog>
           </v-card-title><br/>
 
           <v-card-text>
@@ -291,15 +342,15 @@
                 >
                   <td>{{ item.teacher }}</td>
 
+                  <td>{{item.matter}}</td>
+
                   <td>
                     <v-btn
-                        small
                         outlined
-                        @click="selectedGroup = item; showAddStudent = true"
-                        color="#009127"
+                        color="red"
                     >
                       <v-icon>
-                        mdi-account-plus-outline
+                        mdi-trash-can-outline
                       </v-icon>
                     </v-btn>
                   </td>
@@ -313,18 +364,11 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-                color="red"
-                text
-                @click="showCrudTeacher = false"
-            >
-              Cancelar
-            </v-btn>
-            <v-btn
                 dark
                 color="#51B4E9"
-                @click=""
+                @click="showCrudTeacher = false"
             >
-              Borrar
+              Cerrar
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -413,6 +457,7 @@ import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {validateUser} from "../../util/utilities";
 import router from "../../router";
 import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups";
+import {getNameTeachers} from "../../util/staff";
 export default {
   name: "AdminGroups",
   components: {AdminModule_bar, General},
@@ -426,6 +471,11 @@ export default {
     showConfirmDelete: false,
     showAddStudent: false,
     showCrudTeacher: false,
+    showAddTeacher: false,
+
+    teachers: [],
+    teacherSelected: '',
+    matter: '',
 
     titleGroup: '',
 
@@ -495,6 +545,10 @@ export default {
       this.messageContent = '';
       this.showUtilityMessage = true;
     },
+
+    async getTeachers(){
+      this.teachers = await getNameTeachers();
+    }
   },
 
   async mounted() {

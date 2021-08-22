@@ -42,3 +42,18 @@ export async function sendMailRecovery(mail){
         alert(e);
     }
 }
+
+export async function getNameTeachers() {
+    try {
+        let data = await db.collection('staff').get();
+        let teachersNames = [];
+
+        data.forEach(item => {
+            teachersNames.push(item.data().name);
+        });
+
+        return teachersNames;
+    }catch (e) {
+        alert(e)
+    }
+}
