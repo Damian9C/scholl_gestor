@@ -312,7 +312,23 @@
                       :rules="[rules.required]"
                   ></v-text-field>
 
-
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="red"
+                        text
+                        @click="showAddTeacher = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                        dark
+                        color="#51B4E9"
+                        @click="addNewTeacher"
+                    >
+                      Guardar
+                    </v-btn>
+                  </v-card-actions>
 
                 </v-card-text>
               </v-card>
@@ -421,7 +437,7 @@
 
       <v-dialog
           v-model="showUtilityMessage"
-          width="35vw"
+          width="350px"
           persistent
       >
         <template v-slot:activator="{on, attrs}"/>
@@ -502,18 +518,30 @@ export default {
   }),
 
   methods:{
+
+    // FUNCIONES DE GRUPOS
+
     async saveGroup(){
 
       if (validateGroup(this.groups, `${this.grade}${this.group}`)){
-        this.utilityMessage = 'Error al crear el grupo';
-        this.messageContent = 'El grupo ya Existe';
-        this.showUtilityMessage = true;
+        this.showDialogMessage('Error al crear el grupo', 'El grupo ya Existe');
       }else{
         this.showNewGroup = false;
         await addGroup(this.grade, (this.group.toUpperCase()));
         this.groups = await getGroups();
       }
     },
+
+    async deleteSelectedGroup(item){
+      this.showConfirmDelete = false;
+
+      await dropGroup(item.id);
+      this.groups = await getGroups();
+
+      this.showDialogMessage('Grupo Borrado', '');
+    },
+
+    // FUNCIONES DE ALUMNOS
 
     async addNewStudent(item){
       this.showAddStudent = false;
@@ -526,29 +554,50 @@ export default {
         reports: [],
       });
 
-      this.utilityMessage = 'Alumno Guardado';
-      this.messageContent = '';
-      this.showUtilityMessage = true;
+      this.showDialogMessage('Alumno Guardado', '');
+
       this.numControl = '';
       this.name = '';
 
       await updateGroup(item);
     },
 
-    async deleteSelectedGroup(item){
-      this.showConfirmDelete = false;
-
-      await dropGroup(item.id);
-      this.groups = await getGroups();
-
-      this.utilityMessage = 'Grupo Borrado';
-      this.messageContent = '';
-      this.showUtilityMessage = true;
-    },
+    // FUNCIONES DE MAESTROS
 
     async getTeachers(){
       this.teachers = await getNameTeachers();
-    }
+    },
+
+    async addNewTeacher(){
+      if (this.matter !== '' && this.teacherSelected !== ''){
+        console.log(this.selectedGroup)
+
+        this.selectedGroup.data.currentTeachers.push({
+          teacher: this.teacherSelected,
+          matter: this.matter,
+          date: new Date(),
+        });
+
+        await updateGroup(this.selectedGroup);
+
+        this.showAddTeacher = false;
+        this.teacherSelected = '';
+        this.matter = '';
+
+        this.showDialogMessage('Profesor Asignado', '');
+      }else {
+        this.showDialogMessage('Llene todos los campos', '');
+      }
+    },
+
+    // Cuadro de Dialogo
+
+    showDialogMessage( title , content ){
+      this.utilityMessage = title;
+      this.messageContent = content;
+      this.showUtilityMessage = true;
+    },
+
   },
 
   async mounted() {
