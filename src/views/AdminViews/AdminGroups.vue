@@ -300,6 +300,8 @@
 
                   <v-select
                       :items="teachers"
+                      item-text="name"
+                      item-value="id"
                       label="Profesor"
                       v-model="teacherSelected"
                       :rules="[rules.required]"
@@ -362,8 +364,20 @@
 
                   <td>
                     <v-btn
+                        small
+                        outlined
+                        @click="showWindow(item)"
+                        color="#edae00"
+                    >
+                      <v-icon>
+                        mdi-pencil-outline
+                      </v-icon>
+                    </v-btn>
+
+                    <v-btn
                         outlined
                         color="red"
+                        small
                     >
                       <v-icon>
                         mdi-trash-can-outline
@@ -474,6 +488,7 @@ import {validateUser} from "../../util/utilities";
 import router from "../../router";
 import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups";
 import {getNameTeachers} from "../../util/staff";
+import {addNewTeacherToGroup} from "../../util/addSubjectToGroup";
 export default {
   name: "AdminGroups",
   components: {AdminModule_bar, General},
@@ -570,21 +585,25 @@ export default {
 
     async addNewTeacher(){
       if (this.matter !== '' && this.teacherSelected !== ''){
-        console.log(this.selectedGroup)
+        let exist = true;
 
-        this.selectedGroup.data.currentTeachers.push({
-          teacher: this.teacherSelected,
-          matter: this.matter,
-          date: new Date(),
-        });
+        this.selectedGroup.data.currentTeachers.forEach( item => {
+          if (item.matter === this.matter) exist = false;
+        })
 
-        await updateGroup(this.selectedGroup);
+        if (exist){
+          await addNewTeacherToGroup(this.selectedGroup, this.teacherSelected, this.matter, this.teachers);
 
-        this.showAddTeacher = false;
+          /*this.showAddTeacher = false;
         this.teacherSelected = '';
         this.matter = '';
+        this.showDialogMessage('Profesor Asignado', '');*/
+        } else {
+          this.teacherSelected = '';
+          this.matter = '';
+          this.showDialogMessage('La materia ya existe', 'Verifique el nombre de la materia');
+        }
 
-        this.showDialogMessage('Profesor Asignado', '');
       }else {
         this.showDialogMessage('Llene todos los campos', '');
       }

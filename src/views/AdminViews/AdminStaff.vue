@@ -127,7 +127,7 @@
                   small
                   outlined
                   @click="showWindow(item)"
-                  color="#009127"
+                  color="#edae00"
               >
                 <v-icon>
                   mdi-pencil-outline

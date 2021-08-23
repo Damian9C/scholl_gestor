@@ -49,7 +49,10 @@ export async function getNameTeachers() {
         let teachersNames = [];
 
         data.forEach(item => {
-            teachersNames.push(item.data().name);
+            teachersNames.push({
+                name: item.data().name,
+                id: item.id,
+            });
         });
 
         return teachersNames;
