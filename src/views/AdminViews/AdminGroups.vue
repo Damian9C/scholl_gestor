@@ -163,7 +163,7 @@
               <v-btn
                   small
                   outlined
-                  @click.stop="selectedGroup = item; showAddStudent = true"
+                  @click="selectedGroup = item; showAddStudent = true"
                   color="#009127"
               >
                 <v-icon>
@@ -283,7 +283,6 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="getTeachers"
                 >
                   <v-icon left>
                     mdi-plus
@@ -366,7 +365,9 @@
                     <v-btn
                         small
                         outlined
-                        @click="showWindow(item)"
+                        @click="teacherSelected = item.id;
+                          showEditTeacher = true;
+                          matter = item.matter;"
                         color="#edae00"
                     >
                       <v-icon>
@@ -450,6 +451,56 @@
       </v-dialog>
 
       <v-dialog
+          v-model="showEditTeacher"
+          width="35vw"
+          persistent
+      >
+        <template v-slot:activator="{on, attrs}"/>
+
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Editar Maestro
+          </v-card-title><br/>
+
+          <v-card-text>
+            <v-select
+                :items="teachers"
+                item-text="name"
+                item-value="id"
+                label="Profesor"
+                v-model="teacherSelected"
+                :rules="[rules.required]"
+            >
+            </v-select>
+
+            <v-text-field
+                label="Materia"
+                v-model="matter"
+                :rules="[rules.required]"
+            ></v-text-field>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red"
+                text
+                @click="showEditTeacher = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+                dark
+                color="#51B4E9"
+                @click="editTeacherData(selectedGroup)"
+            >
+              Guardar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
           v-model="showUtilityMessage"
           width="350px"
           persistent
@@ -486,9 +537,9 @@ import General from "../../layouts/general";
 import AdminModule_bar from "../../components/navigationBars/adminModule_bar";
 import {validateUser} from "../../util/utilities";
 import router from "../../router";
-import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups";
+import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups/groups";
 import {getNameTeachers} from "../../util/staff";
-import {addNewTeacherToGroup} from "../../util/addSubjectToGroup";
+import {addNewTeacherToGroup} from "../../util/groups/addSubjectToGroup";
 export default {
   name: "AdminGroups",
   components: {AdminModule_bar, General},
@@ -503,6 +554,7 @@ export default {
     showAddStudent: false,
     showCrudTeacher: false,
     showAddTeacher: false,
+    showEditTeacher: false,
 
     teachers: [],
     teacherSelected: '',
@@ -594,10 +646,10 @@ export default {
         if (exist){
           await addNewTeacherToGroup(this.selectedGroup, this.teacherSelected, this.matter, this.teachers);
 
-          /*this.showAddTeacher = false;
-        this.teacherSelected = '';
-        this.matter = '';
-        this.showDialogMessage('Profesor Asignado', '');*/
+          this.showAddTeacher = false;
+          this.teacherSelected = '';
+          this.matter = '';
+          this.showDialogMessage('Profesor Asignado', '');
         } else {
           this.teacherSelected = '';
           this.matter = '';
@@ -623,6 +675,8 @@ export default {
     if (validateUser(this.$store.state.user.position)){
       await router.push('/home')
     }
+
+    this.getTeachers();
 
     this.groups = await getGroups();
     console.log(this.groups)

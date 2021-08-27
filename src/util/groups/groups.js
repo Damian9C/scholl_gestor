@@ -1,4 +1,4 @@
-import {db} from "./index";
+import {db} from "../index";
 
 export async function getGroups() {
     let data = await db.collection('groups').get()
