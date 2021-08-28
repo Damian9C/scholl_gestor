@@ -313,6 +313,16 @@
                       :rules="[rules.required]"
                   ></v-text-field>
 
+                  <v-select
+                      :items="colorCards"
+                      item-text="name"
+                      item-value="id"
+                      label="Color"
+                      v-model="colorCard"
+                      :rules="[rules.required]"
+                  >
+                  </v-select>
+
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -579,6 +589,16 @@ export default {
       }
     },
 
+    colorCard: '',
+
+    colorCards: [
+        'Azul',
+        'Verde',
+        'Naranja',
+        'Morado',
+        'Rosa',
+    ],
+
     rules: {
       required: value => !!value || 'Obligatorio'
     },
@@ -644,7 +664,7 @@ export default {
         })
 
         if (exist){
-          await addNewTeacherToGroup(this.selectedGroup, this.teacherSelected, this.matter, this.teachers);
+          await addNewTeacherToGroup(this.selectedGroup, this.teacherSelected, this.matter, this.teachers, this.colorCard);
 
           this.showAddTeacher = false;
           this.teacherSelected = '';
