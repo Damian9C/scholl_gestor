@@ -147,7 +147,7 @@
               Generar Materias
             </th>
             <th class="text-left">
-              Opciones
+
             </th>
           </tr>
           </thead>
@@ -163,11 +163,11 @@
               <v-btn
                   small
                   outlined
-                  @click="selectedGroup = item; showAddStudent = true"
+                  @click="selectedGroup = item; showStudent(true)"
                   color="#009127"
               >
                 <v-icon>
-                  mdi-account-plus-outline
+                  mdi-account-multiple
                 </v-icon>
               </v-btn>
 
@@ -225,6 +225,12 @@
         </v-simple-table>
       </div>
 
+      <studentPanel
+          :group="selectedGroup"
+          :showStudentComponent="showStudentComponent"
+          @showStudentComponent="showStudent($event)"
+      />
+
       <v-dialog
           v-model="showConfirmDelete"
           width="35vw"
@@ -267,7 +273,7 @@
 
         <v-card>
           <v-card-title class="text-h5 grey lighten-2">
-            Grupo {{titleGroup}}
+            Maestros del grupo {{titleGroup}}
 
             <v-spacer/>
 
@@ -387,15 +393,6 @@
                       </v-icon>
                     </v-btn>
 
-                    <v-btn
-                        outlined
-                        color="red"
-                        small
-                    >
-                      <v-icon>
-                        mdi-trash-can-outline
-                      </v-icon>
-                    </v-btn>
                   </td>
                 </tr>
                 </tbody>
@@ -412,51 +409,6 @@
                 @click="showCrudTeacher = false"
             >
               Cerrar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog
-          v-model="showAddStudent"
-          width="35vw"
-          persistent
-      >
-        <template v-slot:activator="{on, attrs}"/>
-
-        <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
-            Nuevo Alumno
-          </v-card-title><br/>
-
-          <v-card-text>
-            <v-text-field
-                label="Nombre"
-                v-model="name"
-                :rules="[rules.required]"
-            ></v-text-field>
-            <v-text-field
-                label="Numero de Control"
-                v-model="numControl"
-                :rules="[rules.required]"
-            ></v-text-field>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-                color="red"
-                text
-                @click="showAddStudent = false"
-            >
-              Cancelar
-            </v-btn>
-            <v-btn
-                dark
-                color="#51B4E9"
-                @click="addNewStudent(selectedGroup)"
-            >
-              Guardar
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -555,9 +507,10 @@ import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../
 import {getNameTeachers} from "../../util/staff";
 import {addNewTeacherToGroup, modifySubjectToGroup} from "../../util/groups/addSubjectToGroup";
 import LoadingBar from "../../components/loading/loadingBar";
+import StudentPanel from "../../components/AdminModule/studentPanel/studentPanel";
 export default {
   name: "AdminGroups",
-  components: {LoadingBar, AdminModule_bar, General},
+  components: {StudentPanel, LoadingBar, AdminModule_bar, General},
 
   data: () => ({
     groups: null,
@@ -566,7 +519,8 @@ export default {
     showPromote: false,
     showUtilityMessage: false,
     showConfirmDelete: false,
-    showAddStudent: false,
+    showStudentComponent: false,
+
     showCrudTeacher: false,
     showAddTeacher: false,
     showEditTeacher: false,
@@ -639,23 +593,8 @@ export default {
 
     // FUNCIONES DE ALUMNOS
 
-    async addNewStudent(item){
-      this.showAddStudent = false;
-
-      item.data.students.push({
-        id: this.numControl,
-        lessons: [],
-        medicalCondition: [],
-        name: this.name,
-        reports: [],
-      });
-
-      this.showDialogMessage('Alumno Guardado', '');
-
-      this.numControl = '';
-      this.name = '';
-
-      await updateGroup(item);
+    showStudent(value){
+      this.showStudentComponent = value;
     },
 
     // FUNCIONES DE MAESTROS
@@ -666,6 +605,7 @@ export default {
 
     async addNewTeacher(){
       if (this.matter !== '' && this.teacherSelected !== ''){
+        this.loading = true;
         let exist = true;
 
         this.selectedGroup.data.currentTeachers.forEach( item => {
@@ -685,6 +625,7 @@ export default {
           this.showDialogMessage('La materia ya existe', 'Verifique el nombre de la materia');
         }
 
+        this.loading = false;
       }else {
         this.showDialogMessage('Llene todos los campos', '');
       }
@@ -701,6 +642,7 @@ export default {
             this.newMatter
         ).finally(() => {
           this.loading = false;
+          this.showEditTeacher = false;
         });
       }else {
         alert('Seleccione un Maestro para continuar')
