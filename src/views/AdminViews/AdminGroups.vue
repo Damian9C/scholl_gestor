@@ -376,8 +376,10 @@
                         small
                         outlined
                         @click="teacherSelected = item.id;
-                          showEditTeacher = true;
-                          matter = item.matter;"
+                          newTeacherSelected = item.id
+                          matter = item.matter;
+                          newMatter = item.matter;
+                          showEditTeacher = true;"
                         color="#edae00"
                     >
                       <v-icon>
@@ -478,14 +480,14 @@
                 item-text="name"
                 item-value="id"
                 label="Profesor"
-                v-model="teacherSelected"
+                v-model="newTeacherSelected"
                 :rules="[rules.required]"
             >
             </v-select>
 
             <v-text-field
                 label="Materia"
-                v-model="matter"
+                v-model="newMatter"
                 :rules="[rules.required]"
             ></v-text-field>
           </v-card-text>
@@ -538,6 +540,8 @@
         </v-card>
       </v-dialog>
 
+      <loading-bar :stateCmp="loading"/>
+
     </div>
   </div>
 </template>
@@ -549,10 +553,11 @@ import {validateUser} from "../../util/utilities";
 import router from "../../router";
 import {addGroup, dropGroup, getGroups, updateGroup, validateGroup} from "../../util/groups/groups";
 import {getNameTeachers} from "../../util/staff";
-import {addNewTeacherToGroup} from "../../util/groups/addSubjectToGroup";
+import {addNewTeacherToGroup, modifySubjectToGroup} from "../../util/groups/addSubjectToGroup";
+import LoadingBar from "../../components/loading/loadingBar";
 export default {
   name: "AdminGroups",
-  components: {AdminModule_bar, General},
+  components: {LoadingBar, AdminModule_bar, General},
 
   data: () => ({
     groups: null,
@@ -566,9 +571,13 @@ export default {
     showAddTeacher: false,
     showEditTeacher: false,
 
+    loading: false,
+
     teachers: [],
     teacherSelected: '',
+    newTeacherSelected: '',
     matter: '',
+    newMatter:'',
 
     titleGroup: '',
 
@@ -681,6 +690,23 @@ export default {
       }
     },
 
+    editTeacherData(data){
+      if (this.newTeacherSelected !== undefined){
+        this.loading = true;
+        modifySubjectToGroup(
+            data,
+            this.teacherSelected,
+            this.newTeacherSelected,
+            this.matter,
+            this.newMatter
+        ).finally(() => {
+          this.loading = false;
+        });
+      }else {
+        alert('Seleccione un Maestro para continuar')
+      }
+    },
+
     // Cuadro de Dialogo
 
     showDialogMessage( title , content ){
@@ -696,10 +722,9 @@ export default {
       await router.push('/home')
     }
 
-    this.getTeachers();
+    await this.getTeachers();
 
     this.groups = await getGroups();
-    console.log(this.groups)
   }
 }
 </script>

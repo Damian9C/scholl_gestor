@@ -1,5 +1,5 @@
 import {updateGroup} from "./groups";
-import {getAllStaff, getTeacherById, updateSelectedUser} from "../staff";
+import {getAllStaff, getTeacher, updateSelectedUser} from "../staff";
 
 export async function addNewTeacherToGroup (item, teacher, matter, allTeachers, color) {
     const colorCards = {
@@ -65,6 +65,31 @@ export async function addNewTeacherToGroup (item, teacher, matter, allTeachers, 
 
         await updateGroup(item);
         await updateSelectedUser(staff);
+    }catch (e) {
+        alert(e)
+    }
+}
+
+export async function modifySubjectToGroup(group, oldTeacher, newTeacher, matter, newMatter) {
+    try {
+        let staff = await getAllStaff();
+        let dataOldTeacher;
+        let dataNewTeacher;
+
+        staff.forEach(item => {
+            if (item.id === oldTeacher) dataOldTeacher = item.data();
+            if (item.id === newTeacher) dataNewTeacher = item.data();
+        })
+
+        group.data.currentTeachers.forEach(item => {
+            if (oldTeacher === item.id && item.matter === matter){
+                item.teacher = dataNewTeacher.name;
+                item.matter = newMatter;
+                item.id = newTeacher
+            }
+        });
+
+        await updateGroup(group);
     }catch (e) {
         alert(e)
     }

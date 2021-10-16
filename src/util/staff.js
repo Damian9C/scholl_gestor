@@ -60,3 +60,12 @@ export async function getNameTeachers() {
         alert(e)
     }
 }
+
+export async function getTeacher(id){
+    try {
+        let data = await db.collection('staff').where("id", "==", id ).get()
+        console.log(data)
+    }catch (e) {
+        alert(e)
+    }
+}
