@@ -398,7 +398,6 @@
                 </tbody>
               </v-simple-table>
             </div>
-
           </v-card-text>
 
           <v-card-actions>
@@ -576,18 +575,24 @@ export default {
       if (validateGroup(this.groups, `${this.grade}${this.group}`)){
         this.showDialogMessage('Error al crear el grupo', 'El grupo ya Existe');
       }else{
+        this.loading = true;
         this.showNewGroup = false;
         await addGroup(this.grade, (this.group.toUpperCase()));
         this.groups = await getGroups();
+        this.loading = false;
+
+        this.showDialogMessage('Grupo Creado', '')
       }
     },
 
     async deleteSelectedGroup(item){
+      this.loading = true;
       this.showConfirmDelete = false;
 
       await dropGroup(item.id);
       this.groups = await getGroups();
 
+      this.loading = false;
       this.showDialogMessage('Grupo Borrado', '');
     },
 

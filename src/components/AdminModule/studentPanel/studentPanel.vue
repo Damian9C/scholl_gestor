@@ -3,7 +3,7 @@
     <v-dialog
         v-model="showStudentComponent"
         persistent
-        width="35vw"
+        width="600"
     >
       <v-card>
         <v-card-title class="text-h5 grey lighten-2">
@@ -11,8 +11,55 @@
         </v-card-title>
 
         <v-card-text>
-          <br/>
-          Hola
+          <div>
+            <v-simple-table>
+              <thead>
+              <tr>
+                <th class="text-left">
+                  Alumno
+                </th>
+                <th class="text-left">
+                  Num Control
+                </th>
+                <th>
+                  Inteligencia
+                </th>
+                <th>
+                  Acciones
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                  v-for="item in group.data.students"
+                  class="staffTable__item"
+              >
+                <td>{{ item.name }}</td>
+
+                <td>{{item.id}}</td>
+
+                <td>
+                  {{item.intelligenceType}}
+                </td>
+
+                <td>
+                  <v-btn
+                      small
+                      outlined
+                      @click=""
+                      color="#edae00"
+                  >
+                    <v-icon>
+                      mdi-pencil-outline
+                    </v-icon>
+                  </v-btn>
+
+                </td>
+              </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+
         </v-card-text>
 
         <v-card-actions>
@@ -97,7 +144,6 @@ export default {
   }),
 
   methods:{
-
     async addNewStudent(item){
 
       this.showAddStudent = false;
@@ -108,6 +154,7 @@ export default {
         medicalCondition: [],
         name: this.name,
         reports: [],
+        intelligenceType: '',
       });
 
       await updateGroup(item);
