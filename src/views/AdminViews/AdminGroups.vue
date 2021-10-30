@@ -228,7 +228,7 @@
       <studentPanel
           :group="selectedGroup"
           :showStudentComponent="showStudentComponent"
-          @showStudentComponent="showStudent($event)"
+          @showStudent="showStudent($event)"
       />
 
       <v-dialog
@@ -463,35 +463,16 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog
-          v-model="showUtilityMessage"
-          width="350px"
-          persistent
-      >
-        <template v-slot:activator="{on, attrs}"/>
+      <util-message
+          :message-content="messageContent"
+          :utility-message="utilityMessage"
+          :show-utility-message="showUtilityMessage"
+          @closeUtilMessage="closeDialogMessage($event)"
+      />
 
-        <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
-            {{ utilityMessage }}
-          </v-card-title><br/>
-
-          <v-card-text>
-            {{ messageContent }}
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-                color="primary"
-                @click="showUtilityMessage = false"
-            >
-              Cerrar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <loading-bar :stateCmp="loading"/>
+      <loading-bar
+          :stateCmp="loading"
+      />
 
     </div>
   </div>
@@ -507,9 +488,10 @@ import {getNameTeachers} from "../../util/staff";
 import {addNewTeacherToGroup, modifySubjectToGroup} from "../../util/groups/addSubjectToGroup";
 import LoadingBar from "../../components/loading/loadingBar";
 import StudentPanel from "../../components/AdminModule/studentPanel/studentPanel";
+import UtilMessage from "../../components/utility/utilMessage";
 export default {
   name: "AdminGroups",
-  components: {StudentPanel, LoadingBar, AdminModule_bar, General},
+  components: {UtilMessage, StudentPanel, LoadingBar, AdminModule_bar, General},
 
   data: () => ({
     groups: null,
@@ -660,6 +642,10 @@ export default {
       this.utilityMessage = title;
       this.messageContent = content;
       this.showUtilityMessage = true;
+    },
+
+    closeDialogMessage(event){
+      this.showUtilityMessage = event
     },
 
   },
