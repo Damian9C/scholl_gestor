@@ -63,7 +63,7 @@
                   <v-btn
                       small
                       outlined
-                      @click=""
+                      @click="selectedStudent = item; showEditStudent = true"
                       color="#edae00"
                   >
                     <v-icon>
@@ -115,6 +115,12 @@
               v-model="numControl"
               :rules="[rules.required]"
           ></v-text-field>
+          <v-select
+              :items="typeIntelligence"
+              label="Tipo de Inteligencia"
+              v-model="intelligenceStudent"
+              :rules="[rules.required]"
+          ></v-select>
         </v-card-text>
 
         <v-card-actions>
@@ -137,6 +143,13 @@
       </v-card>
     </v-dialog>
 
+    <edit-student
+        :show-edit-student="showEditStudent"
+        :group="group"
+        :student="selectedStudent"
+        @closeEditStudent="closeDialogEdit($event)"
+    />
+
     <loading-bar
         :stateCmp="loading"
     />
@@ -154,10 +167,11 @@
 import {updateGroup} from "../../../util/groups/groups";
 import UtilMessage from "../../utility/utilMessage";
 import LoadingBar from "../../loading/loadingBar";
+import EditStudent from "./editStudent";
 
 export default {
   name: "studentPanel",
-  components: {LoadingBar, UtilMessage},
+  components: {EditStudent, LoadingBar, UtilMessage},
   props: [
       'group',
       'showStudentComponent'
@@ -165,15 +179,28 @@ export default {
 
   data: () => ({
     showAddStudent: false,
+    showUtilityMessage: false,
+    showEditStudent: false,
+    loading: false,
 
     messageContent: '',
     utilityMessage: '',
-    showUtilityMessage: false,
 
-    loading: false,
+    selectedStudent: {},
 
     numControl: '',
     name: '',
+    intelligenceStudent: 'Lógico-matemática',
+    typeIntelligence: [
+      'Lógico-matemática',
+      'Lingüística',
+      'Espacial',
+      'Musical',
+      'Kinestésico-corporal',
+      'Intrapersonal',
+      'Interpersonal',
+      'Naturalista',
+    ],
 
     rules: {
       required: value => !!value || 'Obligatorio'
@@ -182,7 +209,6 @@ export default {
 
   methods:{
     async addNewStudent(){
-
       this.loading = true;
 
       this.group.data.students.push({
@@ -191,7 +217,7 @@ export default {
         medicalCondition: [],
         name: this.name,
         reports: [],
-        intelligenceType: 'espacial',
+        intelligenceType: this.intelligenceStudent,
       });
 
       await updateGroup(this.group);
@@ -213,6 +239,10 @@ export default {
 
     closeDialogMessage(event){
       this.showUtilityMessage = event
+    },
+
+    closeDialogEdit(event){
+      this.showEditStudent = event;
     },
 
     closeCmp(){
